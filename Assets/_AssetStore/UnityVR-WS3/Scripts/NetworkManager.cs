@@ -97,14 +97,14 @@ namespace WS3
                     {
                         Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
                         // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
-                        PhotonNetwork.Instantiate("Prefabs/" + playerPrefabVR.name, new Vector3(this.transform.position.x, 1.5f, this.transform.position.z), Quaternion.identity, 0);
+                        PhotonNetwork.Instantiate("Prefabs/" + playerPrefabVR.name, new Vector3(this.transform.position.x, 0, this.transform.position.z), Quaternion.identity, 0);
                         teleporting.SetActive(true);
                     }
                     else if (UserDeviceManager.GetDeviceUsed() == UserDeviceType.PC)
                     {
                         Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
                         // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
-                        PhotonNetwork.Instantiate("Prefabs/" + playerPrefabPC.name, new Vector3(this.transform.position.x, 1.5f, this.transform.position.z), Quaternion.identity, 0);
+                        PhotonNetwork.Instantiate("Prefabs/" + playerPrefabPC.name, new Vector3(this.transform.position.x, 0, this.transform.position.z), Quaternion.identity, 0);
                     }
 
                 }

@@ -14,6 +14,17 @@ namespace WS3
         public GameObject SteamVRLeft, SteamVRRight, SteamVRCamera;
         public GameObject UserOtherLeftHandModel, UserOtherRightHandModel;
         private GameObject goFreeLookCameraRig;
+        public GameObject ChargeVirale;
+        public Transform ChargeSpawner;
+        public float speed = 15f;
+        public SteamVR_Input_Sources source;
+
+
+        void Awake()
+        {
+            source = SteamVRRight.GetComponent<SteamVR_Behaviour_Pose>().inputSource;
+        }
+
 
         // Start is called before the first frame update
         void Start()
@@ -35,7 +46,7 @@ namespace WS3
                 goFreeLookCameraRig = transform.Find("/FreeLookCameraRig").gameObject;
                 // Deactivate the FreeLookCameraRig since we are using the SteamVR camera
                 //...
-                goFreeLookCameraRig.SetActive(false);
+               goFreeLookCameraRig.SetActive(false);
             }
             catch (System.Exception ex)
             {
@@ -61,10 +72,11 @@ namespace WS3
             // Right SteamVR_RenderModel activation if UserMe, deactivation if UserOther
             //...
             //SteamVRRight.GetComponentInChildren<SkinnedMeshRenderer>().enabled = photonView.IsMine;
-            SteamVRRight.GetComponentInChildren<SteamVR_RenderModel>().enabled = photonView.IsMine;
-           // SteamVRRight.transform.Find("Model").gameObject.SetActive(photonView.IsMine);
+            //SteamVRRight.GetComponentInChildren<SteamVR_RenderModel>().enabled = photonView.IsMine;
+            // SteamVRRight.transform.Find("Model").gameObject.SetActive(photonView.IsMine);
             // Camera activation if UserMe, deactivation if UserOther
             //...
+            Debug.Log("je touche la cam tkt");
             SteamVRCamera.GetComponent<Camera>().enabled = photonView.IsMine;
             
 
@@ -87,7 +99,89 @@ namespace WS3
         // Update is called once per frame
         void Update()
         {
+            if (!photonView.IsMine) return;
+            if (photonView.IsMine && SteamVR_Actions._default.GrabPinch.GetStateDown(source))
+            {
+                Debug.Log("je tire");
+                photonView.RPC("ShootVirus", RpcTarget.AllViaServer, ChargeSpawner.position, speed * ChargeSpawner.forward);
+            }
+        }
 
+        [PunRPC]
+        void ShootVirus(Vector3 position, Vector3 directionAndSpeed, PhotonMessageInfo info)
+        {
+            // Tips for Photon lag compensation. Il faut compenser le temps de lag pour l'envoi du message.
+            // donc décaler la position de départ de la balle dans la direction
+            float lag = (float)(PhotonNetwork.Time - info.SentServerTime);
+            Debug.LogFormat("PunRPC: ThrowVirus {0} -> {1} lag:{2}", position, directionAndSpeed, lag);
+
+            // Create the Snowball from the Snowball Prefab
+            GameObject chargeVirale = Instantiate(
+                ChargeVirale,
+                position + directionAndSpeed * Mathf.Clamp(lag, 0, 1.0f),
+                Quaternion.identity);
+
+
+            // Add velocity to the Snowball
+            chargeVirale.GetComponent<Rigidbody>().velocity = directionAndSpeed;
+
+            // Destroy the Snowball after 5 seconds
+            Destroy(chargeVirale, 5.0f);
+        }
+
+
+
+        [SerializeField] private Material Health3;
+        [SerializeField] private Material Health2;
+        [SerializeField] private Material Health1;
+
+        private int previousHealth;
+        public int Health { get; private set; }
+        /// <summary>
+        /// The Transform from which the snow ball is spawned
+        /// </summary>
+        [SerializeField] float ForceHit;
+
+        public void HitByVirus()
+        {
+            if (!photonView.IsMine) return;
+            Debug.Log("Got me");
+            var rb = GetComponent<Rigidbody>();
+            rb.AddForce((-transform.forward + (transform.up * 0.1f)) * ForceHit, ForceMode.Impulse);
+
+
+            // Manage to leave room as UserMe
+            if (--Health <= 0)
+            {
+                PhotonNetwork.LeaveRoom();
+            }
+        }
+
+        public void UpdateHealthMaterial()
+        {
+            try
+            {
+               
+            }
+            catch (System.Exception)
+            {
+
+            }
+        }
+
+        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+        {
+            /*if (stream.IsWriting)
+            {
+                stream.SendNext(Health);
+            }
+            else
+            {
+                Health = (int)stream.ReceiveNext();
+            }
+
+            if (previousHealth != Health) UpdateHealthMaterial();
+            previousHealth = Health;*/
         }
     }
 }

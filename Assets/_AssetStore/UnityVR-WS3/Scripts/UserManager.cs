@@ -10,6 +10,9 @@ namespace WS3
     public class UserManager : MonoBehaviourPunCallbacks
     {
         public static GameObject UserMeInstance;
+        public GameObject ChargeVirale;
+        public Transform ChargeSpawner;
+        public float speed = 5f;
 
         public Material PlayerLocalMat;
         /// <summary>
@@ -102,8 +105,11 @@ namespace WS3
         void Update()
         {
             // Don't do anything if we are not the UserMe isLocalPlayer
-            if (!photonView.IsMine) return;
+            
 
         }
+
+
+      
     }
 }

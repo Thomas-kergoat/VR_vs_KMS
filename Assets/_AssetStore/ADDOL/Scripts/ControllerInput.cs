@@ -105,7 +105,7 @@ public class ControllerInput : MonoBehaviour {
     {
         if (pointer.CanTeleport)
         {
-            CameraRig.transform.position = pointer.TargetPosition + new Vector3(CameraRig.transform.position.x - Camera.transform.position.x, 0, CameraRig.transform.position.z - Camera.transform.position.z);
+            CameraRig.transform.position = pointer.TargetPosition + new Vector3(CameraRig.transform.position.x - Camera.transform.position.x, 0, CameraRig.transform.position.z - Camera.transform.position.z) ;
             pointer.DesactivatePointer();
             Destroy(pointer);
         }
