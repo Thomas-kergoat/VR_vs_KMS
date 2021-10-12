@@ -5,7 +5,7 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
 
-    public Camera camera;
+    new public Camera camera;
 
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject weapon;

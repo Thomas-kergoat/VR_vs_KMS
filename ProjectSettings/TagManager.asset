@@ -6,6 +6,11 @@ TagManager:
   tags:
   - VRPlayer
   - KeyboardPlayer
+  - projectile
+  - FxTemporaire
+  - Bullet
+  - Fire
+  - HPBar
   layers:
   - Default
   - TransparentFX

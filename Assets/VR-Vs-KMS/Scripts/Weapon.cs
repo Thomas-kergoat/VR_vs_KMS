@@ -7,7 +7,7 @@ public class Weapon : MonoBehaviour
 
     [SerializeField] float damage = 1f;
 
-    public Camera camera;
+    new public Camera camera;
 
     public ParticleSystem fireFlash;
 
