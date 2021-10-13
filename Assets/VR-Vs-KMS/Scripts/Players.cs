@@ -5,14 +5,15 @@ using UnityEngine.UI;
 
 public class Players : MonoBehaviour
 {
-
     public float maxLife = 5;
 
     public float currentLife = 5;
 
     private float PercentOfHp;
-    public Image RedBar;
 
+    public RoundManager roundManager;
+
+    public Image RedBar;
 
     // Start is called before the first frame update
     void Start()
@@ -28,7 +29,9 @@ public class Players : MonoBehaviour
         if (currentLife <= 0)
         {
             Destroy(gameObject);
-        } else
+            roundManager.DestroyPlayer(gameObject);
+        } 
+        else
         {
             RedBar.rectTransform.sizeDelta = new Vector2(PercentOfHp, RedBar.rectTransform.sizeDelta.y);
         }

@@ -9,9 +9,9 @@ public class RoundManager : MonoBehaviour
 
     private bool gameOnGoing = false;
 
-    private List<GameObject> VRPlayer;
+    public List<GameObject> VRPlayer;
 
-    private List<GameObject> keyboardPlayer;
+    public List<GameObject> keyboardPlayer;
 
     void Start()
     {
@@ -19,14 +19,12 @@ public class RoundManager : MonoBehaviour
         {
 
             keyboardPlayer.Add(kPlayer);
-            Debug.Log("Object added");
         }
 
         foreach (GameObject vPlayer in GameObject.FindGameObjectsWithTag("VRPlayer"))
         {
 
             VRPlayer.Add(vPlayer);
-            Debug.Log("Object added");
         }
 
         gameOnGoing = false;
@@ -36,7 +34,6 @@ public class RoundManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(VRPlayer.Count);
 
         if(VRPlayer.Count <= 0)
         {
@@ -50,10 +47,34 @@ public class RoundManager : MonoBehaviour
 
         } else
         {
-            score.text = "Number of kPlayer : " + VRPlayer.Count + " | Number of vPlayer : " + keyboardPlayer.Count;
+            score.text = "Number of kPlayer : " + VRPlayer.Count + "\nNumber of vPlayer : " + keyboardPlayer.Count;
             gameOnGoing = true;
         }
 
 
+    }
+
+    public void DestroyPlayer(GameObject player)
+    {
+        if(player.tag == "KeyboardPlayer")
+        {
+            for (int i = 0; i< keyboardPlayer.Count; i++)
+            {
+                if (keyboardPlayer[i].GetInstanceID() == player.GetInstanceID())
+                {
+                    keyboardPlayer.RemoveAt(i);
+                }
+            }
+        }
+        else if (player.tag == "VRPlayer")
+        {
+            for (int i = 0; i< VRPlayer.Count; i++)
+            {
+                if (VRPlayer[i].GetInstanceID() == player.GetInstanceID())
+                {
+                    VRPlayer.RemoveAt(i);
+                }
+            }
+        }
     }
 }

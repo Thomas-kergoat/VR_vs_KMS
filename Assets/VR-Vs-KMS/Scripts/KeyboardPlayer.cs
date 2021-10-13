@@ -4,13 +4,11 @@ using UnityEngine;
 
 public class KeyboardPlayer : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public Players playerScript;
+
     void Start()
     {
         gameObject.tag = "KeyboardPlayer";
-
-        Players kPlayer = new Players();
-
     }
 
     // Update is called once per frame

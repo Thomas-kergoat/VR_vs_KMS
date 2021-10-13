@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class VRPlayer : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public Players playerScript;
+
     void Start()
     {
         gameObject.tag = "VRPlayer";
 
-        Players vPlayer = new Players();
     }
 
-    // Update is called once per frame
     void Update()
     {
         
