@@ -15,7 +15,6 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 		[SerializeField] float m_MoveSpeedMultiplier = 1f;
 		[SerializeField] float m_AnimSpeedMultiplier = 1f;
 		[SerializeField] float m_GroundCheckDistance = 0.1f;
-		[SerializeField] float speed = 1f;
 
 		Rigidbody m_Rigidbody;
 		Animator m_Animator;
@@ -51,8 +50,11 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 			// turn amount and forward amount required to head in the desired
 			// direction.
 			if (move.magnitude > 1f) move.Normalize();
-			m_Rigidbody.velocity = move * speed;
+			move = transform.InverseTransformDirection(move);
 			CheckGroundStatus();
+			move = Vector3.ProjectOnPlane(move, m_GroundNormal);
+			m_TurnAmount = Mathf.Atan2(move.x, move.z);
+			m_ForwardAmount = move.z;
 
 			ApplyExtraTurnRotation();
 
