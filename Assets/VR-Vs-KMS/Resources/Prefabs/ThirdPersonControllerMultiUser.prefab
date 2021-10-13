@@ -1650,7 +1650,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_SynchronizePosition: 1
   m_SynchronizeRotation: 1
-  m_SynchronizeScale: 0
+  m_SynchronizeScale: 1
   m_UseLocal: 1
 --- !u!114 &-2581269726046352159
 MonoBehaviour:
@@ -1710,6 +1710,10 @@ MonoBehaviour:
   ChargeSpawner: {fileID: 0}
   speed: 5
   PlayerLocalMat: {fileID: 2100000, guid: c14837dfa515883428e5652d93e80c72, type: 2}
+  Health3: {fileID: 2100000, guid: b7d67d7d7ddb88542b23886a4b496c77, type: 2}
+  Health2: {fileID: 2100000, guid: c14837dfa515883428e5652d93e80c72, type: 2}
+  Health1: {fileID: 2100000, guid: 831e4ea6beda02947bdca5aeb8543156, type: 2}
+  ForceHit: 0
 --- !u!1 &753154066489164751
 GameObject:
   m_ObjectHideFlags: 0

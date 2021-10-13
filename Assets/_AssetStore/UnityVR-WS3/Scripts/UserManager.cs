@@ -39,6 +39,7 @@ namespace WS3
         void Start()
         {
             Debug.Log("isLocalPlayer:" + photonView.IsMine);
+            Health = 3;
             updateGoFreeLookCameraRig();
             followLocalPlayer();
             activateLocalPlayer();
@@ -110,6 +111,60 @@ namespace WS3
         }
 
 
-      
+        [SerializeField] private Material Health3;
+        [SerializeField] private Material Health2;
+        [SerializeField] private Material Health1;
+
+        private int previousHealth;
+        public int Health { get; private set; }
+        /// <summary>
+        /// The Transform from which the snow ball is spawned
+        /// </summary>
+        [SerializeField] float ForceHit;
+
+        public void UpdateHealthMaterial()
+        {
+            try
+            {
+
+            }
+            catch (System.Exception)
+            {
+
+            }
+        }
+
+        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+        {
+            if (stream.IsWriting)
+            {
+                stream.SendNext(Health);
+            }
+            else
+            {
+                Health = (int)stream.ReceiveNext();
+            }
+
+            if (previousHealth != Health) UpdateHealthMaterial();
+            previousHealth = Health;
+        }
+
+        public void HitByVirus()
+        {
+            if (!photonView.IsMine) return;
+            Debug.Log("Got me");
+            var rb = GetComponent<Rigidbody>();
+            rb.AddForce((-transform.forward + (transform.up * 0.1f)) * ForceHit, ForceMode.Impulse);
+
+
+            // Manage to leave room as UserMe
+            if (--Health <= 0)
+            {
+                PhotonNetwork.LeaveRoom();
+            }
+        }
+
+
+
     }
 }

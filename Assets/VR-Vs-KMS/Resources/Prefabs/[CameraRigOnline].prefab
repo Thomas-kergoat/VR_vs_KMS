@@ -1,33 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!54 &1836224163557678599
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4473192589719744994}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 112
-  m_CollisionDetection: 0
---- !u!114 &6701884402284520200
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4473192589719744994}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3048d0303df0bd34a9347b74b664c0b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &5087109762274769619
 GameObject:
   m_ObjectHideFlags: 0
@@ -269,7 +241,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_SynchronizePosition: 1
   m_SynchronizeRotation: 1
-  m_SynchronizeScale: 0
+  m_SynchronizeScale: 1
   m_UseLocal: 1
 --- !u!114 &-6929008410906104196
 MonoBehaviour:
@@ -314,10 +286,6 @@ MonoBehaviour:
   ChargeSpawner: {fileID: 5808098118127494822}
   speed: 15
   source: 0
-  Health3: {fileID: 0}
-  Health2: {fileID: 0}
-  Health1: {fileID: 0}
-  ForceHit: 0
 --- !u!1 &5087348958148723635
 GameObject:
   m_ObjectHideFlags: 0
@@ -427,11 +395,11 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5087348958148723635}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.1, y: 0.1, z: 0.1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.09373169, y: 0.21424866, z: 0.447865}
+  m_Center: {x: -0.0031341538, y: 0.035354614, z: 0.12456584}
 --- !u!114 &5088965061546449407
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -486,6 +454,7 @@ GameObject:
   - component: {fileID: 5077622476901043327}
   - component: {fileID: 5088965061546449405}
   - component: {fileID: 7280495538588322891}
+  - component: {fileID: 602115929463766961}
   m_Layer: 0
   m_Name: Controller (left)
   m_TagString: Untagged
@@ -501,7 +470,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5087469330082145243}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.019}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5084647811984239801}
@@ -583,8 +552,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.1, y: 0.1, z: 0.1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.1, y: 0.1, z: 0.093244836}
+  m_Center: {x: 0, y: 0, z: -0.0033775792}
 --- !u!114 &5088965061546449405
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -624,6 +593,19 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!65 &602115929463766961
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5087469330082145243}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.060668945, y: 0.06301117, z: 0.057869434}
+  m_Center: {x: -0.0015487671, y: 0.0021247864, z: -0.005576849}
 --- !u!1 &5087702052815469391
 GameObject:
   m_ObjectHideFlags: 0
@@ -843,6 +825,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8874137732225770911, guid: 7085cc024e92b69418c3561f17380621,
         type: 3}
+      propertyPath: m_Height
+      value: 1.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8874137732225770911, guid: 7085cc024e92b69418c3561f17380621,
+        type: 3}
       propertyPath: m_Center.x
       value: 0
       objectReference: {fileID: 0}
@@ -856,19 +843,18 @@ PrefabInstance:
       propertyPath: m_Direction
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 8874137732348409601, guid: 7085cc024e92b69418c3561f17380621,
+    - target: {fileID: 8874137732348409606, guid: 7085cc024e92b69418c3561f17380621,
         type: 3}
-      propertyPath: m_Materials.Array.size
+      propertyPath: TrailModule.worldSpace
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8874137732348409606, guid: 7085cc024e92b69418c3561f17380621,
+        type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7085cc024e92b69418c3561f17380621, type: 3}
---- !u!1 &4473192589719744994 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8874137732225770896, guid: 7085cc024e92b69418c3561f17380621,
-    type: 3}
-  m_PrefabInstance: {fileID: 4986819275899704434}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4473192589719744995 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8874137732225770897, guid: 7085cc024e92b69418c3561f17380621,
