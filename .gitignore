@@ -3,7 +3,8 @@
 ### CESI ###########################################################################
 
 # CESI VHD: Release folder when the application is built.
-/[Rr]elease/
+/[Rr]elease[s]/
+
 
 # CESI VHD: All folder or subfolder finishing with "NoCommit" are not submitted to git
 # for example ModelsNoCommit/ allows to test with 3D model in the application without commiting them.
