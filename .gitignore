@@ -5,6 +5,7 @@
 # CESI VHD: Release folder when the application is built.
 /[Rr]elease[s]/
 
+
 # CESI VHD: All folder or subfolder finishing with "NoCommit" are not submitted to git
 # for example ModelsNoCommit/ allows to test with 3D model in the application without commiting them.
 # once validated, those files can be moved inside the "Models/" folder to be used.
@@ -60,3 +61,6 @@ sysinfo.txt
 
 Assets/_AssetStore/Sci-Fi Texture Pack 1/Textures/Texture_2_Diffuse.psd
 Assets/_AssetStore/Sci-Fi Texture Pack 1/Textures/Texture_2_Diffuse.psd.meta
+
+releases/
+
