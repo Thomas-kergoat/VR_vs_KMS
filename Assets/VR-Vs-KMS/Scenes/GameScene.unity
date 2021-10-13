@@ -2808,7 +2808,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100004, guid: 49a0e923d39ec3c4c8bb97699e2f2903, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: 49a0e923d39ec3c4c8bb97699e2f2903, type: 3}
       propertyPath: m_RootOrder
@@ -7878,7 +7878,7 @@ PrefabInstance:
     - target: {fileID: 3144227528623640703, guid: d3d673c6d9551df40a6073ddf8df33ff,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.15750098
+      value: 0.199
       objectReference: {fileID: 0}
     - target: {fileID: 3144227528623640703, guid: d3d673c6d9551df40a6073ddf8df33ff,
         type: 3}
@@ -7924,7 +7924,7 @@ PrefabInstance:
         type: 3}
       propertyPath: playerPrefabPC
       value: 
-      objectReference: {fileID: 753154066489163523, guid: 096e77e5ef2b7a74ea26dc68a5968951,
+      objectReference: {fileID: 4447445503706407454, guid: d83a2015f97fc1549bd49ae7fbfe5404,
         type: 3}
     - target: {fileID: 4224978223781357374, guid: d3d673c6d9551df40a6073ddf8df33ff,
         type: 3}

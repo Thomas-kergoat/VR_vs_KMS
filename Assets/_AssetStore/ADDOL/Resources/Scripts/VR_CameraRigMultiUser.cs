@@ -44,7 +44,7 @@ namespace WS3
             try
             {
                 // Get the Camera to set as the follow camera
-                goFreeLookCameraRig = transform.Find("/FreeLookCameraRig").gameObject;
+                goFreeLookCameraRig = transform.Find("/KeyboardPlayer/Camera").gameObject;
                 // Deactivate the FreeLookCameraRig since we are using the SteamVR camera
                 //...
                goFreeLookCameraRig.SetActive(false);
@@ -101,6 +101,7 @@ namespace WS3
         void Update()
         {
             if (!photonView.IsMine) return;
+            updateGoFreeLookCameraRig();
             if (photonView.IsMine && SteamVR_Actions._default.GrabPinch.GetStateDown(source))
             {
                 Debug.Log("je tire");

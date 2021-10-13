@@ -1,9 +1,10 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Players : MonoBehaviour
+public class Players : MonoBehaviourPunCallbacks
 {
     public float maxLife = 5;
 
@@ -29,6 +30,7 @@ public class Players : MonoBehaviour
         if (currentLife <= 0)
         {
             Destroy(gameObject);
+            Debug.Log("Arghh je meurs !!!");
             roundManager.DestroyPlayer(gameObject);
         } 
         else
@@ -41,5 +43,19 @@ public class Players : MonoBehaviour
     public void OnHit(float damage)
     {
         currentLife = currentLife - damage;
+
+        Debug.Log("Arghh je suis touché il me reste : " + currentLife + " hp !!!");
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(currentLife);
+        }
+        else
+        {
+            currentLife = (int)stream.ReceiveNext();
+        }
     }
 }
