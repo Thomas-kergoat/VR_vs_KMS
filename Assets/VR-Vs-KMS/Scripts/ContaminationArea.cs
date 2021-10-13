@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 
 namespace vr_vs_kms
@@ -29,9 +31,18 @@ namespace vr_vs_kms
         public float inTimer = 0f;
         private CullingGroup cullGroup;
 
+        [SerializeField] private Slider slider;
+        [SerializeField] private SpriteRenderer sprite;
+        [SerializeField] private Image sliderFill;
+        [SerializeField] private float seizingMax;
+        [SerializeField] private float seizingSpeed;
+        private float seizingCurrent;
+        private string capturedBy;
+
         void Start()
         {
             populateParticleSystemCache();
+
             setupCullingGroup();
 
             BelongsToNobody();
@@ -48,7 +59,6 @@ namespace vr_vs_kms
         /// </summary>
         private void setupCullingGroup()
         {
-            Debug.Log($"setupCullingGroup {Camera.main}");
             cullGroup = new CullingGroup();
             cullGroup.targetCamera = Camera.main;
             cullGroup.SetBoundingSpheres(new BoundingSphere[] { new BoundingSphere(transform.position, cullRadius) });
@@ -58,7 +68,6 @@ namespace vr_vs_kms
 
         void OnStateChanged(CullingGroupEvent cullEvent)
         {
-            Debug.Log($"cullEvent {cullEvent.isVisible}");
             if (cullEvent.isVisible)
             {
                 pSystem.Play(true);
@@ -69,9 +78,62 @@ namespace vr_vs_kms
             }
         }
 
-        void OnTriggerExit(Collider coll)
+        void OnTriggerExit(Collider other)
         {
-            
+            if (seizingCurrent < seizingMax)
+            {
+                seizingCurrent = 0;
+                sprite.color = nobody.secondColor;
+                BelongsToNobody();
+            }
+            slider.gameObject.SetActive(false);
+
+        }
+
+        private void OnTriggerStay(Collider other)
+        {
+            if(other.tag == "KeyboardPlayer")
+            {
+                if (capturedBy == "Virus")
+                {
+                    capturedBy = "";
+                    seizingCurrent = 0;
+                }
+                slider.gameObject.SetActive(true);
+                BelongsToScientists();
+                if(seizingCurrent < seizingMax)
+                {
+                    seizingCurrent = seizingCurrent + seizingSpeed * Time.deltaTime;
+
+                    slider.value = seizingCurrent / seizingMax;
+                }
+                else
+                {
+                    capturedBy = "Scientists";
+                    sprite.color = scientist.secondColor;
+                }
+            }
+            else if (other.tag == "VRPlayer")
+            {
+                if (capturedBy == "Scientists")
+                {
+                    capturedBy = "";
+                    seizingCurrent = 0;
+                }
+                slider.gameObject.SetActive(true);
+                BelongsToVirus();
+                if (seizingCurrent < seizingMax)
+                {
+                    seizingCurrent = seizingCurrent + seizingSpeed * Time.deltaTime;
+
+                    slider.value = seizingCurrent / seizingMax;
+                }
+                else
+                {
+                    capturedBy = "Virus";
+                    sprite.color = virus.secondColor;
+                }
+            }
         }
 
         void Update()
@@ -81,8 +143,9 @@ namespace vr_vs_kms
 
         private void ColorParticle(ParticleSystem pSys, Color mainColor, Color accentColor)
         {
-            // TODO: Solution to color particle 
-            
+            var system = pSys.main;
+            system.startColor = mainColor;
+            sliderFill.color = accentColor;
         }
 
         public void BelongsToNobody()
