@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-class CharacterController : MonoBehaviour
+class CustomCharacterController : MonoBehaviour
 {
     private Vector2 mouseInput;
     private Vector3 playerInput;
