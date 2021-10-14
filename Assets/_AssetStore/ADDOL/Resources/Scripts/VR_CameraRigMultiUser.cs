@@ -17,6 +17,7 @@ namespace WS3
         public GameObject ChargeVirale;
         public Transform ChargeSpawner;
         public float speed = 15f;
+        public float Health = 5f;
         public SteamVR_Input_Sources source;
 
 
@@ -107,6 +108,12 @@ namespace WS3
                 Debug.Log("je tire");
                 photonView.RPC("ShootVirus", RpcTarget.AllViaServer, ChargeSpawner.position, speed * ChargeSpawner.forward);
             }
+            if (Health <= 0)
+            {
+                Destroy(gameObject);
+                Debug.Log("Arghh je meurs !!!");
+                PhotonNetwork.LeaveLobby();
+            }
         }
 
         [PunRPC]
@@ -131,6 +138,23 @@ namespace WS3
             Destroy(chargeVirale, 5.0f);
         }
 
+        public void OnHitKMS(float damage)
+        {
+            Health = Health - damage;
+            Debug.Log("VRUSER :  je suis touché il me reste : " + Health + " hp !!!");
+        }
+
+        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+        {
+            if (stream.IsWriting)
+            {
+                stream.SendNext(Health);
+            }
+            else
+            {
+                Health = (int)stream.ReceiveNext();
+            }
+        }
 
     }
 }

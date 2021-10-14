@@ -31,7 +31,7 @@ public class Players : MonoBehaviourPunCallbacks
         {
             Destroy(gameObject);
             Debug.Log("Arghh je meurs !!!");
-            roundManager.DestroyPlayer(gameObject);
+            PhotonNetwork.LeaveRoom();
         } 
         else
         {
@@ -44,7 +44,7 @@ public class Players : MonoBehaviourPunCallbacks
     {
         currentLife = currentLife - damage;
 
-        Debug.Log("Arghh je suis touché il me reste : " + currentLife + " hp !!!");
+        Debug.Log("KMSUSER :  je suis touché il me reste : " + currentLife + " hp !!!");
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

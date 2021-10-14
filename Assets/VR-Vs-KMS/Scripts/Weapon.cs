@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using WS3;
 
-public class Weapon : MonoBehaviour
+public class Weapon : MonoBehaviourPunCallbacks
 {
 
     [SerializeField] float damage = 1f;
@@ -15,22 +17,31 @@ public class Weapon : MonoBehaviour
     void Update()
     {
 
-        if (Input.GetButtonDown("Fire1")) Shoot();
+        if (Input.GetButtonDown("Fire1"))
+        {
+            Debug.Log("je tire");
+            //Shoot();
+            photonView.RPC("Shoot", RpcTarget.AllViaServer);
+        }
 
     }
 
+    [PunRPC]
     private void Shoot()
     {
         fireFlash.Play();
         RaycastHit hit;
         if (Physics.Raycast(camera.transform.position, camera.transform.forward, out hit))
         {
+            Debug.Log("touché : " + hit.transform.tag);
             if(hit.transform.tag == "VRPlayer")
             {
-                if (hit.transform.gameObject.GetComponent<Players>() != null)
+                
+                if (hit.transform.gameObject.GetComponentInParent<VR_CameraRigMultiUser>() != null)
                 {
-                    var target = hit.transform.gameObject.GetComponent<Players>();
-                    target.OnHit(damage);
+                    Debug.Log("il est touché !");
+                    var target = hit.transform.gameObject.GetComponentInParent<VR_CameraRigMultiUser>();
+                    target.OnHitKMS(damage);
                 }
             }
         }

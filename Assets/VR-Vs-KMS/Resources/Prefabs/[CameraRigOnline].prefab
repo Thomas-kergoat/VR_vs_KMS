@@ -286,6 +286,7 @@ MonoBehaviour:
     type: 3}
   ChargeSpawner: {fileID: 5808098118127494822}
   speed: 15
+  Health: 5
   source: 0
 --- !u!114 &-3583608983541205929
 MonoBehaviour:
@@ -782,6 +783,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Virus
+      objectReference: {fileID: 0}
+    - target: {fileID: 8874137732225770896, guid: 7085cc024e92b69418c3561f17380621,
+        type: 3}
+      propertyPath: m_TagString
+      value: VRPlayer
       objectReference: {fileID: 0}
     - target: {fileID: 8874137732225770897, guid: 7085cc024e92b69418c3561f17380621,
         type: 3}
