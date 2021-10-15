@@ -17,6 +17,7 @@ namespace WS3
         public GameObject ChargeVirale;
         public Transform ChargeSpawner;
         public float speed = 15f;
+        public float Health = 5f;
         public SteamVR_Input_Sources source;
 
 
@@ -44,7 +45,7 @@ namespace WS3
             try
             {
                 // Get the Camera to set as the follow camera
-                goFreeLookCameraRig = transform.Find("/FreeLookCameraRig").gameObject;
+                goFreeLookCameraRig = transform.Find("/KeyboardPlayer/Camera").gameObject;
                 // Deactivate the FreeLookCameraRig since we are using the SteamVR camera
                 //...
                goFreeLookCameraRig.SetActive(false);
@@ -101,10 +102,17 @@ namespace WS3
         void Update()
         {
             if (!photonView.IsMine) return;
+            updateGoFreeLookCameraRig();
             if (photonView.IsMine && SteamVR_Actions._default.GrabPinch.GetStateDown(source))
             {
                 Debug.Log("je tire");
                 photonView.RPC("ShootVirus", RpcTarget.AllViaServer, ChargeSpawner.position, speed * ChargeSpawner.forward);
+            }
+            if (Health <= 0)
+            {
+                Destroy(gameObject);
+                Debug.Log("Arghh je meurs !!!");
+                PhotonNetwork.LeaveLobby();
             }
         }
 
@@ -130,6 +138,23 @@ namespace WS3
             Destroy(chargeVirale, 5.0f);
         }
 
+        public void OnHitKMS(float damage)
+        {
+            Health = Health - damage;
+            Debug.Log("VRUSER :  je suis touché il me reste : " + Health + " hp !!!");
+        }
+
+        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+        {
+            if (stream.IsWriting)
+            {
+                stream.SendNext(Health);
+            }
+            else
+            {
+                Health = (int)stream.ReceiveNext();
+            }
+        }
 
     }
 }

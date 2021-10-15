@@ -5,6 +5,7 @@ using WS3;
 
 public class ChargeViraleBehaviour : MonoBehaviour
 {
+    public float Damage = 1f;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,11 +25,11 @@ public class ChargeViraleBehaviour : MonoBehaviour
         Debug.Log("ChargeVirale hit something:" + hit);
 
 
-        UserManager um = hit.GetComponent<UserManager>();
+        Players um = hit.GetComponent<Players>();
         if (um != null)
         {
             Debug.Log("  It is a player !!");
-            um.HitByVirus();
+            um.OnHit(Damage);
         }
         Destroy(gameObject);
     }

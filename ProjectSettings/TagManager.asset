@@ -12,6 +12,7 @@ TagManager:
   - Fire
   - HPBar
   - Shield
+  - Spawner
   layers:
   - Default
   - TransparentFX

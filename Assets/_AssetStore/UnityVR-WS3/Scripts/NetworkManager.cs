@@ -8,7 +8,8 @@ using UnityEngine.SceneManagement;
 
 using Photon.Pun;
 using Photon.Realtime;
-
+using System.Collections.Generic;
+using Random = System.Random;
 
 namespace WS3
 {
@@ -24,6 +25,12 @@ namespace WS3
 
         [Tooltip("The prefab to use for representing the user in VR. Must be in Resources folder")]
         public GameObject playerPrefabVR;
+
+        public List<GameObject> SpawnList;
+
+        private Transform spawn;
+
+        private Random random = new Random();
 
 
         #region Photon Callbacks
@@ -82,6 +89,13 @@ namespace WS3
         {
             Instance = this;
 
+            var size = SpawnList.Count;
+
+            var rand = random.Next(0, size);
+            Debug.Log("nombre random "+rand);
+
+            spawn = SpawnList[rand].transform;
+
             var UserDeviceManager = GetComponent<UserDeviceManager>();
 
             if (playerPrefabPC == null)
@@ -97,14 +111,14 @@ namespace WS3
                     {
                         Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
                         // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
-                        PhotonNetwork.Instantiate("Prefabs/" + playerPrefabVR.name, new Vector3(this.transform.position.x, 0, this.transform.position.z), Quaternion.identity, 0);
+                        PhotonNetwork.Instantiate("Prefabs/" + playerPrefabVR.name, new Vector3(spawn.transform.position.x, 0, spawn.transform.position.z), Quaternion.identity, 0);
                         teleporting.SetActive(true);
                     }
                     else if (UserDeviceManager.GetDeviceUsed() == UserDeviceType.PC)
                     {
                         Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
                         // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
-                        PhotonNetwork.Instantiate("Prefabs/" + playerPrefabPC.name, new Vector3(this.transform.position.x, 0, this.transform.position.z), Quaternion.identity, 0);
+                        PhotonNetwork.Instantiate("Prefabs/" + playerPrefabPC.name, new Vector3(spawn.transform.position.x, 1, spawn.transform.position.z), Quaternion.identity, 0);
                     }
 
                 }

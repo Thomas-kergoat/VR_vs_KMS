@@ -42,6 +42,7 @@ MonoBehaviour:
   - RespawnSpaceship
   - UngrabTouchedObject
   - ShootVirus
+  - Shoot
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
