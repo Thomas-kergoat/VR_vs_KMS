@@ -517,10 +517,14 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1641ee30cf14c7d458d814d9963f0247, type: 3}
   m_Name: 
-  m_EditorClassIdentifier:
+  m_EditorClassIdentifier: 
   damage: 1
-  camera: {fileID: 400664170279006242}
   fireFlash: {fileID: 6549447441794930994}
+  camera: {fileID: 400664170279006242}
+  bullet: {fileID: 0}
+  BulletSpawn: {fileID: 0}
+  speed: 20
+  weapon: {fileID: 0}
 --- !u!114 &400664171353383002
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -25,7 +25,7 @@ public class Players : MonoBehaviourPunCallbacks
     // Update is called once per frame
     void Update()
     {
-        PercentOfHp = currentLife / maxLife * 100;
+        PercentOfHp = currentLife / maxLife * 50;
 
         if (currentLife <= 0)
         {
