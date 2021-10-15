@@ -25,12 +25,20 @@ public class Weapon : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(camera.transform.position, camera.transform.forward, out hit))
         {
-            if(hit.transform.tag == "VRPlayer")
+            if(hit.collider.transform.tag == "VRPlayer")
             {
-                if (hit.transform.gameObject.GetComponent<Players>() != null)
+                if (hit.collider.transform.gameObject.GetComponent<Players>() != null)
                 {
-                    var target = hit.transform.gameObject.GetComponent<Players>();
+                    var target = hit.collider.transform.gameObject.GetComponent<Players>();
                     target.OnHit(damage);
+                }
+            }
+            else if (hit.collider.transform.tag == "Shield")
+            {
+                if (hit.collider.transform.gameObject.GetComponent<Shield>() != null)
+                {
+                    var target = hit.collider.transform.gameObject.GetComponent<Shield>();
+                    target.OnHitShield(damage);
                 }
             }
         }

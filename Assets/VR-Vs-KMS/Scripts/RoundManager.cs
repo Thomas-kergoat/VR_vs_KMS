@@ -47,7 +47,7 @@ public class RoundManager : MonoBehaviour
 
         } else
         {
-            score.text = "Number of kPlayer : " + VRPlayer.Count + "\nNumber of vPlayer : " + keyboardPlayer.Count;
+            score.text = VRPlayer.Count + " ||| " + keyboardPlayer.Count;
             gameOnGoing = true;
         }
 

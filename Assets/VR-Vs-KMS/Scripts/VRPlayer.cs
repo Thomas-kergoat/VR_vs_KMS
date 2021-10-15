@@ -10,10 +10,12 @@ public class VRPlayer : MonoBehaviour
     {
         gameObject.tag = "VRPlayer";
 
+
     }
 
     void Update()
     {
-        
+
     }
+
 }

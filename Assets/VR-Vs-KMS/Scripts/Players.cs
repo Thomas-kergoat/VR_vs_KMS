@@ -28,8 +28,8 @@ public class Players : MonoBehaviour
 
         if (currentLife <= 0)
         {
-            Destroy(gameObject);
             roundManager.DestroyPlayer(gameObject);
+            Destroy(gameObject);
         } 
         else
         {
