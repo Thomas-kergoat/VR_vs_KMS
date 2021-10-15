@@ -31,9 +31,8 @@ namespace vr_vs_kms
         public float inTimer = 0f;
         private CullingGroup cullGroup;
 
-        [SerializeField] private Slider slider;
+        private Slider slider;
         [SerializeField] private SpriteRenderer sprite;
-        [SerializeField] private Image sliderFill;
         [SerializeField] private float seizingMax;
         [SerializeField] private float seizingSpeed;
         private float seizingCurrent;
@@ -86,13 +85,15 @@ namespace vr_vs_kms
                 sprite.color = nobody.secondColor;
                 BelongsToNobody();
             }
-            slider.gameObject.SetActive(false);
+            if (slider != null) slider.gameObject.SetActive(false);
 
         }
 
         private void OnTriggerStay(Collider other)
         {
-            if(other.tag == "KeyboardPlayer")
+            slider = other.gameObject.GetComponentInChildren<Slider>(true);
+            Debug.Log(slider);
+            if (other.tag == "KeyboardPlayer")
             {
                 if (capturedBy == "Virus")
                 {
@@ -143,9 +144,10 @@ namespace vr_vs_kms
 
         private void ColorParticle(ParticleSystem pSys, Color mainColor, Color accentColor)
         {
+            
             var system = pSys.main;
             system.startColor = mainColor;
-            sliderFill.color = accentColor;
+            if (slider != null) slider.GetComponentsInChildren<Image>()[1].color = accentColor;
         }
 
         public void BelongsToNobody()

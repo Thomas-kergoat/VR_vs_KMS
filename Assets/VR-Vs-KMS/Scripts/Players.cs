@@ -29,20 +29,19 @@ public class Players : MonoBehaviourPunCallbacks
 
         if (currentLife <= 0)
         {
-<<<<<<< HEAD
             roundManager.DestroyPlayer(gameObject);
-            Destroy(gameObject);
-=======
             Destroy(gameObject);
             Debug.Log("Arghh je meurs !!!");
             PhotonNetwork.LeaveRoom();
->>>>>>> eb39b9a8748ac9464499da5ac880ea5e4c7c05a9
         } 
         else
         {
-            RedBar.rectTransform.sizeDelta = new Vector2(PercentOfHp, RedBar.rectTransform.sizeDelta.y);
+            //TODO : A EFFACER, EVITE DE GENERER REFERENCE NULL ERORR
+            if (gameObject.tag == "KeyboardPlayer")
+            {
+                RedBar.rectTransform.sizeDelta = new Vector2(PercentOfHp, RedBar.rectTransform.sizeDelta.y);
+            }
         }
-
     }
 
     public void OnHit(float damage)

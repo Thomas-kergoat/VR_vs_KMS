@@ -21,7 +21,7 @@ public class Shield : MonoBehaviour
 
         if (currentShieldLife <= 0)
         {
-            Destroy(transform);
+            Destroy(gameObject);
         }
 
     }
