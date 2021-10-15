@@ -5018,6 +5018,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 1
   camera: {fileID: 4447445504780825191}
+  bullet: {fileID: 0}
+  BulletSpawn: {fileID: 0}
+  speed: 1
   fireFlash: {fileID: 4447445503683690931}
 --- !u!114 &4447445503706407455
 MonoBehaviour:

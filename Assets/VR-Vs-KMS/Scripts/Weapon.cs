@@ -10,8 +10,11 @@ public class Weapon : MonoBehaviourPunCallbacks
     [SerializeField] float damage = 1f;
 
     new public Camera camera;
+    public GameObject bullet;
+    public Transform BulletSpawn;
+    public float speed = 20f;
+    public Transform weapon;
 
-    public ParticleSystem fireFlash;
 
     // Update is called once per frame
     void Update()
@@ -21,29 +24,36 @@ public class Weapon : MonoBehaviourPunCallbacks
         {
             Debug.Log("je tire");
             //Shoot();
-            photonView.RPC("Shoot", RpcTarget.AllViaServer);
+            photonView.RPC("ShootAntiVirus", RpcTarget.AllViaServer, BulletSpawn.position, speed*weapon.forward);
         }
 
     }
 
+   
+
     [PunRPC]
-    private void Shoot()
+    void ShootAntiVirus(Vector3 position, Vector3 directionAndSpeed, PhotonMessageInfo info)
     {
-        fireFlash.Play();
-        RaycastHit hit;
-        if (Physics.Raycast(camera.transform.position, camera.transform.forward, out hit))
-        {
-            Debug.Log("touché : " + hit.transform.tag);
-            if(hit.transform.tag == "VRPlayer")
-            {
-                
-                if (hit.transform.gameObject.GetComponentInParent<VR_CameraRigMultiUser>() != null)
-                {
-                    Debug.Log("il est touché !");
-                    var target = hit.transform.gameObject.GetComponentInParent<VR_CameraRigMultiUser>();
-                    target.OnHitKMS(damage);
-                }
-            }
-        }
+        // Tips for Photon lag compensation. Il faut compenser le temps de lag pour l'envoi du message.
+        // donc décaler la position de départ de la balle dans la direction
+        float lag = (float)(PhotonNetwork.Time - info.SentServerTime);
+       // Debug.LogFormat("PunRPC: ThrowVirus {0} -> {1} lag:{2}", position, directionAndSpeed, lag);
+        //Debug.Log("rotation du spawn"+ BulletSpawn.transform.rotation);
+
+        // Create the Snowball from the Snowball Prefab
+        GameObject Bullet = Instantiate(
+            bullet,
+            position + directionAndSpeed * Mathf.Clamp(lag, 0, 1.0f),Quaternion.identity);
+        //Bullet.GetComponent<ChargeAntiViraleBehaviour>().weapon = weapon;
+        //Debug.Log("rotation de la balle"+Bullet.transform.rotation.eulerAngles);
+        //Debug.Log("rotation de l'arme" + weapon.transform.rotation.eulerAngles);
+
+
+
+        // Add velocity to the Snowball
+        Bullet.GetComponent<Rigidbody>().velocity = directionAndSpeed;
+
+        // Destroy the Snowball after 5 seconds
+        Destroy(Bullet, 5.0f);
     }
 }
