@@ -36,7 +36,7 @@ public class Players : MonoBehaviourPunCallbacks
         } 
         else
         {
-            //TODO : A EFFACER, EVITE DE GENERER REFERENCE NULL ERORR
+            // A EFFACER, EVITE DE GENERER REFERENCE NULL ERORR
             if (gameObject.tag == "KeyboardPlayer")
             {
                 RedBar.rectTransform.sizeDelta = new Vector2(PercentOfHp, RedBar.rectTransform.sizeDelta.y);
