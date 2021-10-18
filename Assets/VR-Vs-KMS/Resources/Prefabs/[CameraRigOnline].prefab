@@ -108,7 +108,7 @@ GameObject:
   - component: {fileID: -3583608983541205929}
   m_Layer: 0
   m_Name: '[CameraRigOnline]'
-  m_TagString: Untagged
+  m_TagString: VRPlayer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -288,6 +288,7 @@ MonoBehaviour:
   speed: 15
   Health: 5
   source: 0
+  roundManager: {fileID: 0}
 --- !u!114 &-3583608983541205929
 MonoBehaviour:
   m_ObjectHideFlags: 0

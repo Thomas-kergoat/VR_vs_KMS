@@ -627,7 +627,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 1
   camera: {fileID: 2571547932964908638}
-  bullet: {fileID: 6741766047135106197, guid: 8985aab657dc67d4f8e47340b76e9cc8, type: 3}
+  bullet: {fileID: 1158534519924672389, guid: 7596581e2f193074bbb53a4929a1ac06, type: 3}
   BulletSpawn: {fileID: 2054940133216481491}
   speed: 20
   weapon: {fileID: 505654729413919292}

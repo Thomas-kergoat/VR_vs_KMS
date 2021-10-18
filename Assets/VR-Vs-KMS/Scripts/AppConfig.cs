@@ -7,9 +7,20 @@ public class AppConfig {
     // HTC, force the device to HTC, PC, force device to PC Keyboard, AUTO: select the device according to the hardware connected.
     public string DeviceUsed = "AUTO"; 
 
-
     private static AppConfig inst;
-    public string WebAPILink = "api.openweathermap.org/data/2.5/weather?id=6454707&appid=671812e2679023bdd277e66b4fafc580&units=metric";
+    public float LifeNumber = 3f;
+    public float DelayShot = 2.5f;
+    public float DelayTeleport = 1.5f;
+    public float TimeToAreaContaminator = 3.5f;
+    public float NbContaminationPlayerToVictory = 10f;
+    public float RadiusExplosion = 5f;
+    public float ColorShotKMS_R = 1f;
+    public float ColorShotKMS_G = 0f;
+    public float ColorShotKMS_B = 0f;
+    public float ColorShotVirus_R = 0f;
+    public float ColorShotVirus_G = 1f;
+    public float ColorShotVirus_B = 0f;
+    public Color ColorVirus = new Color(1, 0, 0);
 
     public static AppConfig Inst
     {
@@ -47,7 +58,6 @@ public class AppConfig {
     public void UpdateValuesFromJsonFile()
     {
         Debug.Log(Application.absoluteURL);
-        Debug.Log(WebAPILink);
         string path = System.IO.Path.Combine(Application.streamingAssetsPath, Application.productName+".AppConfig.json");
        
         UpdateValuesFromJsonFile(path);

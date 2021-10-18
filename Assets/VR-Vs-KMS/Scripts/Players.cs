@@ -3,10 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using WS3;
 
 public class Players : MonoBehaviourPunCallbacks
 {
-    public float maxLife = 5;
+    public float maxLife;
 
     public float currentLife = 5;
 
@@ -15,11 +16,13 @@ public class Players : MonoBehaviourPunCallbacks
     public RoundManager roundManager;
 
     public Image RedBar;
-
+    NetworkManager net;
     // Start is called before the first frame update
     void Start()
     {
-
+        maxLife = AppConfig.Inst.LifeNumber;
+        net = GameObject.FindObjectOfType<NetworkManager>();
+        roundManager = GameObject.FindObjectOfType<RoundManager>();
     }
 
     // Update is called once per frame
@@ -29,9 +32,22 @@ public class Players : MonoBehaviourPunCallbacks
 
         if (currentLife <= 0)
         {
-            Destroy(gameObject);
+
+            
+            roundManager.KillPlayer(gameObject);
+            PhotonNetwork.Destroy(gameObject);
             Debug.Log("Arghh je meurs !!!");
-            PhotonNetwork.LeaveRoom();
+            if (net)
+            {
+                net.respawn();
+               
+            }
+            else
+            {
+                Debug.Log("Network manager nout found disconnection");
+                PhotonNetwork.LeaveLobby();
+                
+            }
         } 
         else
         {
@@ -42,9 +58,13 @@ public class Players : MonoBehaviourPunCallbacks
 
     public void OnHit(float damage)
     {
-        currentLife = currentLife - damage;
+        if (photonView.IsMine)
+        {
+            currentLife = currentLife - damage;
 
-        Debug.Log("KMSUSER :  je suis touché il me reste : " + currentLife + " hp !!!");
+            Debug.Log("KMSUSER :  je suis touché il me reste : " + currentLife + " hp !!!");
+        }
+        
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -57,5 +77,13 @@ public class Players : MonoBehaviourPunCallbacks
         {
             currentLife = (int)stream.ReceiveNext();
         }
+    }
+
+    IEnumerator DelayRespawn()
+    {
+        PhotonNetwork.Destroy(gameObject);
+        yield return new WaitForSeconds(1.5f);
+        net.respawn();
+
     }
 }
