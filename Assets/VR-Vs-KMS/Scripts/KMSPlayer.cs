@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class KeyboardPlayer : MonoBehaviour
+public class KMSPlayer : MonoBehaviour
 {
     public Players playerScript;
 
     void Start()
     {
-        gameObject.tag = "KeyboardPlayer";
+        gameObject.tag = "KMSPlayer";
     }
 
     // Update is called once per frame

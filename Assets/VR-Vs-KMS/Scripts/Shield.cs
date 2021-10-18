@@ -23,8 +23,6 @@ public class Shield : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // A EFFACER, POUR TEST
-        if (Input.GetKeyDown("space")) OnHitShield(1);
         
         PercentOfShield = currentShieldLife / maxShieldLife * 50;
 

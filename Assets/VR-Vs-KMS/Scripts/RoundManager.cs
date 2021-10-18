@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class RoundManager : MonoBehaviour
 {
-    public Text score;
+    public TextMeshPro score;
 
     private bool gameOnGoing = false;
 
@@ -15,7 +16,7 @@ public class RoundManager : MonoBehaviour
 
     void Start()
     {
-        foreach (GameObject kPlayer in GameObject.FindGameObjectsWithTag("KeyboardPlayer"))
+        foreach (GameObject kPlayer in GameObject.FindGameObjectsWithTag("KMSPlayer"))
         {
 
             keyboardPlayer.Add(kPlayer);
@@ -37,12 +38,12 @@ public class RoundManager : MonoBehaviour
 
         if(VRPlayer.Count <= 0)
         {
-            score.text = "kPlayers Win";
+            score.text = "KMSPlayer Win";
             gameOnGoing = false;
 
         } else if(keyboardPlayer.Count <= 0)
         {
-            score.text = "vPlayers Win";
+            score.text = "VRPlayer Win";
             gameOnGoing = false;
 
         } else
@@ -56,7 +57,7 @@ public class RoundManager : MonoBehaviour
 
     public void DestroyPlayer(GameObject player)
     {
-        if(player.tag == "KeyboardPlayer")
+        if(player.tag == "KMSPlayer")
         {
             for (int i = 0; i< keyboardPlayer.Count; i++)
             {

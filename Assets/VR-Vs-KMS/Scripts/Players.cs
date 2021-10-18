@@ -16,6 +16,10 @@ public class Players : MonoBehaviourPunCallbacks
 
     public Image RedBar;
 
+    public Slider slider;
+
+    public Image sliderFill;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,22 +29,17 @@ public class Players : MonoBehaviourPunCallbacks
     // Update is called once per frame
     void Update()
     {
+
         PercentOfHp = currentLife / maxLife * 50;
 
         if (currentLife <= 0)
         {
-            roundManager.DestroyPlayer(gameObject);
             Destroy(gameObject);
-            Debug.Log("Arghh je meurs !!!");
             PhotonNetwork.LeaveRoom();
         } 
         else
         {
-            // A EFFACER, EVITE DE GENERER REFERENCE NULL ERORR
-            if (gameObject.tag == "KeyboardPlayer")
-            {
-                RedBar.rectTransform.sizeDelta = new Vector2(PercentOfHp, RedBar.rectTransform.sizeDelta.y);
-            }
+            RedBar.rectTransform.sizeDelta = new Vector2(PercentOfHp, RedBar.rectTransform.sizeDelta.y);
         }
     }
 
@@ -48,7 +47,6 @@ public class Players : MonoBehaviourPunCallbacks
     {
         currentLife = currentLife - damage;
 
-        Debug.Log("KMSUSER :  je suis touché il me reste : " + currentLife + " hp !!!");
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -62,4 +60,5 @@ public class Players : MonoBehaviourPunCallbacks
             currentLife = (int)stream.ReceiveNext();
         }
     }
+
 }
