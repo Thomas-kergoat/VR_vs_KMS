@@ -19,6 +19,8 @@ public class ControllerInput : MonoBehaviour {
     private Vector3 angularVelocity;
 
     private GameObject SelectedObject = null;
+
+    private bool Teleport = true;
     
     void Awake()
     {
@@ -52,9 +54,10 @@ public class ControllerInput : MonoBehaviour {
             TeleportPressed();
         }
 
-        if (SteamVR_Actions._default.Teleport.GetStateUp(source))
+        if (SteamVR_Actions._default.Teleport.GetStateUp(source) && Teleport)
         {
             TeleportReleased();
+            StartCoroutine(DelayTeleportVr());
         }
 
     }
@@ -134,6 +137,13 @@ public class ControllerInput : MonoBehaviour {
                 SelectedObject = null;
             }
         }
+    }
+
+    IEnumerator DelayTeleportVr()
+    {
+        Teleport = false;
+        yield return new WaitForSeconds(AppConfig.Inst.DelayTeleport);
+        Teleport = true;
     }
 
 }
