@@ -16,11 +16,6 @@ public class Players : MonoBehaviourPunCallbacks
     public RoundManager roundManager;
 
     public Image RedBar;
-
-    public Slider slider;
-
-    public Image sliderFill;
-
     NetworkManager net;
     // Start is called before the first frame update
     void Start()
@@ -33,8 +28,7 @@ public class Players : MonoBehaviourPunCallbacks
     // Update is called once per frame
     void Update()
     {
-
-        PercentOfHp = currentLife / maxLife * 50;
+        PercentOfHp = currentLife / maxLife * 100;
 
         if (currentLife <= 0)
         {
@@ -59,6 +53,7 @@ public class Players : MonoBehaviourPunCallbacks
         {
             RedBar.rectTransform.sizeDelta = new Vector2(PercentOfHp, RedBar.rectTransform.sizeDelta.y);
         }
+
     }
 
     public void OnHit(float damage)

@@ -29,5 +29,4 @@ public class CameraController : MonoBehaviour
 
         weapon.transform.Rotate(cameraRotation * speed * -1);
     }
-
 }
