@@ -676,8 +676,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxLife: 5
   currentLife: 5
-  roundManager: {fileID: 0}
+  roundManager: {fileID: 333246820974904600, guid: ee7c108cb3dc8a7429bc3b0f2752bd4b,
+    type: 3}
   RedBar: {fileID: 2571547932620033516}
+  slider: {fileID: 0}
+  sliderFill: {fileID: 0}
 --- !u!114 &2571547931891547707
 MonoBehaviour:
   m_ObjectHideFlags: 0

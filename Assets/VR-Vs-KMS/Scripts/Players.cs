@@ -8,39 +8,43 @@ using WS3;
 public class Players : MonoBehaviourPunCallbacks
 {
     public float maxLife;
-
     public float currentLife = 5;
-
     private float PercentOfHp;
 
-    public RoundManager roundManager;
+    public GameObject roundManager;
 
     public Image RedBar;
-    NetworkManager net;
+
+    public Slider slider;
+
+    public Image sliderFill;
+
+    private NetworkManager net;
+    private GameObject netObj;
     // Start is called before the first frame update
     void Start()
     {
         maxLife = AppConfig.Inst.LifeNumber;
-        net = GameObject.FindObjectOfType<NetworkManager>();
-        roundManager = GameObject.FindObjectOfType<RoundManager>();
+        netObj = GameObject.Find("NetworkManager");
+        net = netObj.GetComponent<NetworkManager>();
+        roundManager = GameObject.Find("RoundManager");
     }
 
     // Update is called once per frame
     void Update()
     {
-        PercentOfHp = currentLife / maxLife * 100;
+        PercentOfHp = (currentLife*100) / maxLife;
 
         if (currentLife <= 0)
         {
-
+            roundManager.GetComponent<RoundManager>().KillPlayer(gameObject);
             
-            roundManager.KillPlayer(gameObject);
-            PhotonNetwork.Destroy(gameObject);
             Debug.Log("Arghh je meurs !!!");
             if (net)
             {
                 net.respawn();
-               
+                PhotonNetwork.Destroy(gameObject);
+
             }
             else
             {
@@ -61,7 +65,6 @@ public class Players : MonoBehaviourPunCallbacks
         if (photonView.IsMine)
         {
             currentLife = currentLife - damage;
-
             Debug.Log("KMSUSER :  je suis touché il me reste : " + currentLife + " hp !!!");
         }
         

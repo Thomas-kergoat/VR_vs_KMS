@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Valve.VR;
 using Valve.VR.InteractionSystem;
 
@@ -15,13 +16,25 @@ namespace WS3
         public GameObject UserOtherLeftHandModel, UserOtherRightHandModel;
         private GameObject goFreeLookCameraRig;
         public GameObject ChargeVirale;
+
         public Transform ChargeSpawner;
+
         public float speed = 15f;
         public float Health;
+        public float maxLife;
+        private float PercentOfHp;
+
         public SteamVR_Input_Sources source;
+
         private bool Shot = true;
-        NetworkManager net;
-        public RoundManager roundManager;
+
+        public NetworkManager net;
+        public GameObject roundManager;
+
+        public Image RedBar;
+        public Image sliderFill;
+
+        public Slider slider;
 
 
         void Awake()
@@ -35,12 +48,15 @@ namespace WS3
         void Start()
         {
             Health = AppConfig.Inst.LifeNumber;
+            maxLife = Health;
             Debug.Log("ma vie en tant que joueur vr est de : " + Health);
             updateGoFreeLookCameraRig();
             steamVRactivation();
-            GetComponentInChildren<ParticleSystem>().enableEmission = !photonView.IsMine;
-            net = GameObject.FindObjectOfType<NetworkManager>();
-            roundManager = GameObject.FindObjectOfType<RoundManager>();
+            ParticleSystem ps = GetComponentInChildren<ParticleSystem>();
+            ps.enableEmission = !photonView.IsMine;
+            net = GameObject.Find("NetworkManager").GetComponent<NetworkManager>(); ;
+            //net = netObj.GetComponent<NetworkManager>();
+            roundManager = GameObject.Find("RoundManager");
         }
 
         private void updateGoFreeLookCameraRig()
@@ -67,8 +83,6 @@ namespace WS3
         private void steamVRactivation()
         {
             SteamVRLeft.GetComponent<SteamVR_Behaviour_Pose>().enabled = photonView.IsMine;
-
-            SteamVRLeft.GetComponentInChildren<SteamVR_RenderModel>().enabled = photonView.IsMine;
 
             SteamVRRight.GetComponent<SteamVR_Behaviour_Pose>().enabled = photonView.IsMine;
 
@@ -97,24 +111,29 @@ namespace WS3
                 photonView.RPC("ShootVirus", RpcTarget.AllViaServer, ChargeSpawner.position, speed * ChargeSpawner.forward);
                 StartCoroutine(DelayShotVr());
             }
+
+            PercentOfHp = (Health*100) / maxLife ;
             if (Health <= 0)
             {
-                PhotonNetwork.Destroy(gameObject);
-                roundManager.KillPlayer(gameObject);
+                
+                roundManager.GetComponent<RoundManager>().KillPlayer(gameObject);
                 Debug.Log("Arghh je meurs !!!");
                 if (net)
                 {
                     //StartCoroutine(DelayRespawn());
                     net.respawn();
-                    
+                    PhotonNetwork.Destroy(gameObject);
+
                 }
                 else
                 {
                     Debug.Log("Network manager nout found disconnection");
                     PhotonNetwork.LeaveLobby();
                 }
-
-
+            }
+            else
+            {
+                RedBar.rectTransform.sizeDelta = new Vector2(PercentOfHp, RedBar.rectTransform.sizeDelta.y);
             }
         }
 

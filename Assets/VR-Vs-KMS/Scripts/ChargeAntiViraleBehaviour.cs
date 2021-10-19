@@ -36,10 +36,19 @@ public class ChargeAntiViraleBehaviour : MonoBehaviour
 
 
         VR_CameraRigMultiUser um = hit.GetComponentInParent<VR_CameraRigMultiUser>();
-        if (um != null)
+        if (um != null && hit.transform.tag == "VRPlayer")
         {
             Debug.Log("  It is a Vr player !!");
             um.OnHitKMS(Damage);
+        }
+        else if (hit.transform.tag == "Shield")
+        {
+            if (hit.transform.gameObject.GetComponent<ShieldGreg>() != null)
+            {
+                var target = hit.transform.gameObject.GetComponent<ShieldGreg>();
+                target.OnHitShield(Damage);
+                Debug.Log("Je touche le Shield");
+            }
         }
         Destroy(gameObject);
     }
