@@ -91,8 +91,8 @@ GameObject:
   - component: {fileID: 343858879543097529}
   - component: {fileID: 351556872235687203}
   m_Layer: 0
-  m_Name: SM_Wep_Syringe_Gun_Trigger_01
-  m_TagString: Untagged
+  m_Name: '[CameraRigOnline]'
+  m_TagString: VRPlayer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -324,6 +324,21 @@ MonoBehaviour:
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
 --- !u!114 &8543464266058586584
+  SteamVRLeft: {fileID: 5087469330082145243}
+  SteamVRRight: {fileID: 5087348958148723635}
+  SteamVRCamera: {fileID: 5087109762274769619}
+  UserOtherLeftHandModel: {fileID: 100060, guid: 65d8eda911e0ba548a3674f65c43308b,
+    type: 3}
+  UserOtherRightHandModel: {fileID: 100060, guid: 641e9d2f5c6b4cb438161abef3be8300,
+    type: 3}
+  ChargeVirale: {fileID: 8377634130601301843, guid: aefe3a79a1d168b43898d45abe256575,
+    type: 3}
+  ChargeSpawner: {fileID: 5808098118127494822}
+  speed: 15
+  Health: 5
+  source: 0
+  roundManager: {fileID: 0}
+--- !u!114 &-3583608983541205929
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
