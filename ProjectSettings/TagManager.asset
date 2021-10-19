@@ -5,13 +5,14 @@ TagManager:
   serializedVersion: 2
   tags:
   - VRPlayer
-  - KeyboardPlayer
   - projectile
   - FxTemporaire
   - Bullet
   - Fire
   - HPBar
+  - Shield
   - Spawner
+  - KMSPlayer
   layers:
   - Default
   - TransparentFX

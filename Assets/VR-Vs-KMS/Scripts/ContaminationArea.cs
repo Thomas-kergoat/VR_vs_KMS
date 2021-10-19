@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 
 namespace vr_vs_kms
@@ -12,7 +14,7 @@ namespace vr_vs_kms
         {
             public Color mainColor;
             public Color secondColor;
-            
+
         }
 
         public BelongToProperties nobody;
@@ -29,9 +31,20 @@ namespace vr_vs_kms
         public float inTimer = 0f;
         private CullingGroup cullGroup;
 
+        [SerializeField] private SpriteRenderer sprite;
+        [SerializeField] private float seizingMax;
+        [SerializeField] private float seizingSpeed;
+        private float seizingCurrent;
+        private string capturedBy = "None";
+        private bool VRCapturing = false;
+        private bool KMSCapturing = false;
+
+        public List<Players> playersOnPoint;
+
         void Start()
         {
             populateParticleSystemCache();
+
             setupCullingGroup();
 
             BelongsToNobody();
@@ -48,7 +61,6 @@ namespace vr_vs_kms
         /// </summary>
         private void setupCullingGroup()
         {
-            Debug.Log($"setupCullingGroup {Camera.main}");
             cullGroup = new CullingGroup();
             cullGroup.targetCamera = Camera.main;
             cullGroup.SetBoundingSpheres(new BoundingSphere[] { new BoundingSphere(transform.position, cullRadius) });
@@ -58,7 +70,6 @@ namespace vr_vs_kms
 
         void OnStateChanged(CullingGroupEvent cullEvent)
         {
-            Debug.Log($"cullEvent {cullEvent.isVisible}");
             if (cullEvent.isVisible)
             {
                 pSystem.Play(true);
@@ -69,20 +80,122 @@ namespace vr_vs_kms
             }
         }
 
-        void OnTriggerExit(Collider coll)
+        void OnTriggerExit(Collider other)
         {
-            
+            if (other.tag == "KMSPlayer")
+            {
+                KMSCapturing = false;
+                other.gameObject.GetComponent<Players>().slider.gameObject.SetActive(false);
+
+                for (int i = 0; i < playersOnPoint.Count; i++)
+                {
+                    if (playersOnPoint[i].GetInstanceID() == other.GetInstanceID())
+                    {
+                        playersOnPoint.RemoveAt(i);
+                    }
+                }
+            }
+            if (other.tag == "VRPlayer")
+            {
+                VRCapturing = false;
+                other.gameObject.GetComponent<Players>().slider.gameObject.SetActive(false);
+
+                for (int i = 0; i < playersOnPoint.Count; i++)
+                {
+                    if (playersOnPoint[i].GetInstanceID() == other.GetInstanceID())
+                    {
+                        playersOnPoint.RemoveAt(i);
+                    }
+                }
+            }
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.tag == "KMSPlayer")
+            {
+                KMSCapturing = true;
+                playersOnPoint.Add(other.gameObject.GetComponent<Players>());
+                other.gameObject.GetComponent<Players>().slider.gameObject.SetActive(true);
+            }
+            if (other.tag == "VRPlayer")
+            {
+                VRCapturing = true;
+                playersOnPoint.Add(other.gameObject.GetComponent<Players>());
+                Debug.Log(other.tag + " " + other.name);
+                other.gameObject.GetComponent<Players>().slider.gameObject.SetActive(true);
+            }
         }
 
         void Update()
         {
-            
+
+            if (KMSCapturing == false && VRCapturing == false && capturedBy == "None")
+            {
+                BelongsToNobody();
+                seizingCurrent = 0;
+                sprite.color = nobody.secondColor;
+            }
+            else if (KMSCapturing && VRCapturing)
+            {
+                BelongsToNobody();
+                sprite.color = nobody.secondColor;
+            }
+            else if (VRCapturing)
+            {
+                BelongsToVirus();
+                if (seizingCurrent < seizingMax)
+                {
+                    seizingCurrent = seizingCurrent + seizingSpeed * Time.deltaTime;
+                }
+                foreach (Players player in playersOnPoint)
+                {
+                    if (player.tag == "VRPlayer")
+                    {
+                        player.slider.value = seizingCurrent / seizingMax;
+
+                        player.slider.GetComponentsInChildren<Image>()[1].color = virus.secondColor;
+
+                    }
+                }
+                if (seizingCurrent > seizingMax)
+                {
+                    capturedBy = "VRPlayer";
+                    sprite.color = virus.secondColor;
+                }
+            }
+            else if (KMSCapturing)
+            {
+                BelongsToScientists();
+                if (seizingCurrent < seizingMax)
+                {
+                    seizingCurrent = seizingCurrent + seizingSpeed * Time.deltaTime;
+                }
+                foreach (Players player in playersOnPoint)
+                {
+                    if (player.tag == "KMSPlayer")
+                    {
+                        player.slider.value = seizingCurrent / seizingMax;
+
+                        player.slider.GetComponentsInChildren<Image>()[1].color = scientist.secondColor;
+
+                    }
+                }
+                if (seizingCurrent > seizingMax)
+                {
+                    capturedBy = "KMSPlayer";
+                    sprite.color = scientist.secondColor;
+                }
+
+            }
+
         }
 
         private void ColorParticle(ParticleSystem pSys, Color mainColor, Color accentColor)
         {
-            // TODO: Solution to color particle 
-            
+
+            var system = pSys.main;
+            system.startColor = mainColor;
         }
 
         public void BelongsToNobody()
