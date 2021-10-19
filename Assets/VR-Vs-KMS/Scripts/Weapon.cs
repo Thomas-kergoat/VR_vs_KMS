@@ -16,20 +16,17 @@ public class Weapon : MonoBehaviourPunCallbacks
     public Transform BulletSpawn;
     public float speed = 20f;
     public Transform weapon;
-    private bool Shot = true;
 
 
     // Update is called once per frame
     void Update()
     {
 
-        if (Input.GetButtonDown("Fire1") && Shot)
+        if (Input.GetButtonDown("Fire1"))
         {
             Debug.Log("je tire");
             //Shoot();
             photonView.RPC("ShootAntiVirus", RpcTarget.AllViaServer, BulletSpawn.position, speed*weapon.forward);
-
-            StartCoroutine(DelayShot());
         }
 
     }
@@ -69,7 +66,10 @@ public class Weapon : MonoBehaviourPunCallbacks
         // Create the Snowball from the Snowball Prefab
         GameObject Bullet = Instantiate(
             bullet,
-            position + directionAndSpeed * Mathf.Clamp(lag, 0, 1.0f),Quaternion.Euler(BulletSpawn.transform.eulerAngles));
+            position + directionAndSpeed * Mathf.Clamp(lag, 0, 1.0f),Quaternion.identity);
+        //Bullet.GetComponent<ChargeAntiViraleBehaviour>().weapon = weapon;
+        //Debug.Log("rotation de la balle"+Bullet.transform.rotation.eulerAngles);
+        //Debug.Log("rotation de l'arme" + weapon.transform.rotation.eulerAngles);
 
 
 
@@ -78,12 +78,5 @@ public class Weapon : MonoBehaviourPunCallbacks
 
         // Destroy the Snowball after 5 seconds
         Destroy(Bullet, 5.0f);
-    }
-
-    IEnumerator DelayShot()
-    {
-        Shot = false;
-        yield return new WaitForSeconds(AppConfig.Inst.DelayShot);
-        Shot = true;
     }
 }

@@ -21,5 +21,7 @@ public class VirusBodyBehaviour : MonoBehaviour
         transform.localPosition = new Vector3(0,0-transform.parent.position.y,0);
         collider.height = transform.parent.position.y* 1.5f;
         particleSystem.startLifetime = Mathf.Clamp(transform.parent.position.y, minsize, maxsize) *1.1f;
+        
+
     }
 }
