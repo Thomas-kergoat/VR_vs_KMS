@@ -17,13 +17,11 @@ public class Shield : MonoBehaviour
     void Start()
     {
         transform.tag = "Shield";
-
     }
 
     // Update is called once per frame
     void Update()
     {
-        
         PercentOfShield = currentShieldLife / maxShieldLife * 50;
 
         if (currentShieldLife <= 0)
@@ -42,6 +40,5 @@ public class Shield : MonoBehaviour
         currentShieldLife = currentShieldLife - damage;
 
         transform.localScale += new Vector3(0, -0.1f, -0.1f);
-
     }
 }

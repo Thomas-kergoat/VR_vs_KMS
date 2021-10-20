@@ -8,7 +8,7 @@ public class VRPlayer : MonoBehaviour
 
     void Start()
     {
-        gameObject.tag = "VRPlayer";
+        //gameObject.tag = "VRPlayer";
 
 
     }

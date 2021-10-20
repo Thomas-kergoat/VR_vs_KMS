@@ -13,6 +13,7 @@ TagManager:
   - Shield
   - Spawner
   - KMSPlayer
+  - RadarBlip
   layers:
   - Default
   - TransparentFX
