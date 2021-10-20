@@ -22,6 +22,9 @@ public class Radar : MonoBehaviour
 
     void Start()
     {
+
+        InvokeRepeating("RefreshPlayers", 0f, 2.0f);
+
         oldFrame = player.transform.eulerAngles.y;
 
         map = GetComponent<Image>();
@@ -29,19 +32,6 @@ public class Radar : MonoBehaviour
         mapH = map.rectTransform.sizeDelta.y;
 
         mapW = map.rectTransform.sizeDelta.x;
-
-        foreach (GameObject vPlayer in GameObject.FindGameObjectsWithTag("KMSPlayer"))
-        {
-
-            GameObject newDot = Instantiate(redDotPrefab);
-
-            newDot.transform.SetParent(blackDot.transform, false);
-
-            VRPlayersDots.Add(newDot);
-
-            VRPlayers.Add(vPlayer);
-
-        }
 
     }
 
@@ -64,4 +54,37 @@ public class Radar : MonoBehaviour
         oldFrame = player.transform.eulerAngles.y;
 
     }
+
+    private void RefreshPlayers()
+    {
+        VRPlayers.Clear();
+
+        VRPlayersDots.Clear();
+
+        foreach (GameObject radarDot in GameObject.FindGameObjectsWithTag("RadarDot"))
+        {
+
+            Destroy(radarDot);
+
+        }
+
+        Debug.Log("Refreshing");
+
+        foreach (GameObject vPlayer in GameObject.FindGameObjectsWithTag("KMSPlayer"))
+        {
+
+            GameObject newDot = Instantiate(redDotPrefab);
+
+            newDot.transform.SetParent(blackDot.transform, false);
+
+            newDot.tag = "RadarDot";
+
+            VRPlayersDots.Add(newDot);
+
+            VRPlayers.Add(vPlayer);
+
+        }
+
+    }
+
 }
