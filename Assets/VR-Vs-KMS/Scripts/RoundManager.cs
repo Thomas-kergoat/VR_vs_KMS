@@ -1,17 +1,15 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using WS3;
 
-public class RoundManager : MonoBehaviour
+public class RoundManager : MonoBehaviourPunCallbacks 
 {
     public Text score;
 
-    private bool gameOnGoing = false;
-
-    public List<GameObject> VRPlayer;
-
-    public List<GameObject> keyboardPlayer;
+    public NetworkManager NetworkManager;
 
     public float VirusKilled = 0;
     public float AntiVirusKilled = 0;
@@ -20,42 +18,63 @@ public class RoundManager : MonoBehaviour
     void Start()
     {
         NbContaminatedtedPlayerToVictory = AppConfig.Inst.NbContaminationPlayerToVictory;
-        gameOnGoing = false;
-
+        NetworkManager = GameObject.Find("NetworkManager").GetComponent<NetworkManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
-
         if(VirusKilled == NbContaminatedtedPlayerToVictory )
         {
-            score.text = "kPlayers Win";
-            gameOnGoing = false;
+            //score.text = "kPlayers Win";
+            Debug.Log("kPlayers Win");
+            NetworkManager.KillRoom();
+            //photonView.RPC("EndGame", RpcTarget.AllViaServer);
+           
 
         } else if(AntiVirusKilled == NbContaminatedtedPlayerToVictory)
         {
-            score.text = "vPlayers Win";
-            gameOnGoing = false;
-
-        } else
-        {
-            //score.text = "kPlayer kills : " + VirusKilled + "\n VRPlayer kills : " + AntiVirusKilled;
-            gameOnGoing = true;
+            //score.text = "vPlayers Win";
+            Debug.Log("vPlayers Win");
+            NetworkManager.KillRoom();
+            //photonView.RPC("EndGame", RpcTarget.AllViaServer);
+            
         }
-
-
     }
+
 
     public void KillPlayer(GameObject player)
     {
-        if (player.tag == "KeyboardPlayer")
+        Debug.Log("je rentre dans la fonction");
+        Debug.Log(player.transform.tag);
+        
+        if (player.transform.tag == "KeyboardPlayer")
         {
             AntiVirusKilled++;
+            Debug.Log("+1 antivirus");
         }
-        else if (player.tag == "VRPlayer")
+        else if (player.transform.tag == "VRGameObject")
         {
             VirusKilled++;
+            Debug.Log("+1 virus");
         }
+    }
+
+   /* public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(VirusKilled);
+        }
+        else
+        {
+            VirusKilled = (float)stream.ReceiveNext();
+        }
+    }*/
+
+    [PunRPC]
+    public void EndGame()
+    {
+       PhotonNetwork.LeaveRoom();
     }
 }

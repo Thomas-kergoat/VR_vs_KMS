@@ -5,13 +5,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using WS3;
 
-public class Players : MonoBehaviourPunCallbacks
+public class Players : MonoBehaviourPunCallbacks, IPunObservable
 {
     public float maxLife;
     public float currentLife = 5;
     private float PercentOfHp;
 
-    public GameObject roundManager;
+    public RoundManager roundManager;
 
     public Image RedBar;
 
@@ -24,39 +24,21 @@ public class Players : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
+       
         maxLife = AppConfig.Inst.LifeNumber;
         netObj = GameObject.Find("NetworkManager");
         net = netObj.GetComponent<NetworkManager>();
-        roundManager = GameObject.Find("RoundManager");
+        roundManager = GameObject.Find("RoundManager").GetComponent<RoundManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        PercentOfHp = (currentLife*100) / maxLife;
+       
+        if (!photonView.IsMine) return;
+       
 
-        if (currentLife <= 0)
-        {
-            roundManager.GetComponent<RoundManager>().KillPlayer(gameObject);
-            
-            Debug.Log("Arghh je meurs !!!");
-            if (net)
-            {
-                net.respawn();
-                PhotonNetwork.Destroy(gameObject);
-
-            }
-            else
-            {
-                Debug.Log("Network manager nout found disconnection");
-                PhotonNetwork.LeaveLobby();
-                
-            }
-        } 
-        else
-        {
-            RedBar.rectTransform.sizeDelta = new Vector2(PercentOfHp, RedBar.rectTransform.sizeDelta.y);
-        }
+        
 
     }
 
@@ -75,18 +57,48 @@ public class Players : MonoBehaviourPunCallbacks
         if (stream.IsWriting)
         {
             stream.SendNext(currentLife);
+            PercentOfHp = (currentLife * 100) / maxLife;
+            if (currentLife <= 0)
+            {
+                Debug.Log("Arghh je meurs !!!");
+                roundManager.KillPlayer(gameObject);
+
+                if (net)
+                {
+                    StartCoroutine(Delay(gameObject));
+
+                }
+                else
+                {
+                    Debug.Log("Network manager nout found disconnection");
+                    PhotonNetwork.LeaveLobby();
+                }
+            }
+            else
+            {
+                RedBar.rectTransform.sizeDelta = new Vector2(PercentOfHp, RedBar.rectTransform.sizeDelta.y);
+            }
         }
         else
         {
-            currentLife = (int)stream.ReceiveNext();
+            currentLife = (float)stream.ReceiveNext();
+            Debug.Log(currentLife + "iuiseghfiusgiegh");
+            if (currentLife <= 0)
+            {
+                Debug.Log("je détruit l'autre !!!");
+                roundManager.KillPlayer(gameObject);
+                Destroy(gameObject);
+
+            }
         }
     }
 
-    IEnumerator DelayRespawn()
+    
+    IEnumerator Delay(GameObject gameObject)
     {
-        PhotonNetwork.Destroy(gameObject);
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(0f);
+        Debug.Log("je me détrui");
+        Destroy(gameObject);
         net.respawn();
-
     }
 }

@@ -12,6 +12,8 @@ TagManager:
   - Fire
   - HPBar
   - Spawner
+  - Shield
+  - VRGameObject
   layers:
   - Default
   - TransparentFX

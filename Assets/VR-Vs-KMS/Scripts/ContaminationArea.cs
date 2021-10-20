@@ -32,7 +32,7 @@ namespace vr_vs_kms
 
         [SerializeField] private SpriteRenderer sprite;
         [SerializeField] private float seizingMax;
-        [SerializeField] private float seizingSpeed;
+        public float seizingSpeed;
         private float seizingCurrent;
         private string capturedBy = "None";
         private bool VRCapturing = false;
@@ -42,6 +42,8 @@ namespace vr_vs_kms
 
         void Start()
         {
+            seizingSpeed = AppConfig.Inst.TimeToAreaContaminator;
+
             populateParticleSystemCache();
 
             setupCullingGroup();

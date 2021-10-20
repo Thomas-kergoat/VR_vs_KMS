@@ -79,6 +79,14 @@ namespace WS3
             PhotonNetwork.LeaveRoom();
         }
 
+        public void KillRoom()
+        {
+            Debug.Log("tout le monde quitte la roomm");
+            // TODO: 
+            PhotonNetwork.LeaveRoom();
+
+        }
+
         private void updatePlayerNumberUI()
         {
             // TODO: Update the playerNumberUI

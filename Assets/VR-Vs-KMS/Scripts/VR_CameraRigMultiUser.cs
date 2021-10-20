@@ -9,7 +9,7 @@ using Valve.VR.InteractionSystem;
 
 namespace WS3
 {
-    public class VR_CameraRigMultiUser : MonoBehaviourPunCallbacks
+    public class VR_CameraRigMultiUser : MonoBehaviourPunCallbacks, IPunObservable
     {
         // reference to SteamController
         public GameObject SteamVRLeft, SteamVRRight, SteamVRCamera;
@@ -29,7 +29,7 @@ namespace WS3
         private bool Shot = true;
 
         public NetworkManager net;
-        public GameObject roundManager;
+        public RoundManager roundManager;
 
         public Image RedBar;
         public Image sliderFill;
@@ -54,9 +54,8 @@ namespace WS3
             steamVRactivation();
             ParticleSystem ps = GetComponentInChildren<ParticleSystem>();
             ps.enableEmission = !photonView.IsMine;
-            net = GameObject.Find("NetworkManager").GetComponent<NetworkManager>(); ;
-            //net = netObj.GetComponent<NetworkManager>();
-            roundManager = GameObject.Find("RoundManager");
+            net = GameObject.Find("NetworkManager").GetComponent<NetworkManager>();
+            roundManager = GameObject.Find("RoundManager").GetComponent<RoundManager>();
         }
 
         private void updateGoFreeLookCameraRig()
@@ -111,30 +110,9 @@ namespace WS3
                 photonView.RPC("ShootVirus", RpcTarget.AllViaServer, ChargeSpawner.position, speed * ChargeSpawner.forward);
                 StartCoroutine(DelayShotVr());
             }
+            PercentOfHp = (Health * 100) / maxLife;
+           
 
-            PercentOfHp = (Health*100) / maxLife ;
-            if (Health <= 0)
-            {
-                
-                roundManager.GetComponent<RoundManager>().KillPlayer(gameObject);
-                Debug.Log("Arghh je meurs !!!");
-                if (net)
-                {
-                    //StartCoroutine(DelayRespawn());
-                    net.respawn();
-                    PhotonNetwork.Destroy(gameObject);
-
-                }
-                else
-                {
-                    Debug.Log("Network manager nout found disconnection");
-                    PhotonNetwork.LeaveLobby();
-                }
-            }
-            else
-            {
-                RedBar.rectTransform.sizeDelta = new Vector2(PercentOfHp, RedBar.rectTransform.sizeDelta.y);
-            }
         }
 
         [PunRPC]
@@ -164,6 +142,7 @@ namespace WS3
                 Health = Health - damage;
                 Debug.Log("VRUSER :  je suis touché il me reste : " + Health + " hp !!!");
             }
+
             
         }
 
@@ -172,12 +151,43 @@ namespace WS3
             if (stream.IsWriting)
             {
                 stream.SendNext(Health);
+                Debug.Log(Health);
+                if (Health <= 0)
+                {
+                    Debug.Log("Arghh je meurs !!!");
+                    roundManager.KillPlayer(gameObject);
+
+                    if (net)
+                    {
+                        StartCoroutine(Delay(gameObject));
+                      
+                    }
+                    else
+                    {
+                        Debug.Log("Network manager nout found disconnection");
+                        PhotonNetwork.LeaveLobby();
+                    }
+                }
+                else
+                {
+                    RedBar.rectTransform.sizeDelta = new Vector2(PercentOfHp, RedBar.rectTransform.sizeDelta.y);
+                }
             }
             else
             {
-                Health = (int)stream.ReceiveNext();
+                Health = (float)stream.ReceiveNext();
+                Debug.Log(Health + "iuiseghfiusgiegh");
+                if (Health <= 0)
+                {
+                    Debug.Log("je détruit l'autre !!!");
+                    roundManager.KillPlayer(gameObject);
+                    Destroy(gameObject);
+
+                }
             }
         }
+
+      
 
         IEnumerator DelayShotVr()
         {
@@ -186,13 +196,12 @@ namespace WS3
             Shot = true;
         }
 
-        IEnumerator DelayRespawn()
+        IEnumerator Delay(GameObject gameObject)
         {
-            PhotonNetwork.Destroy(gameObject);
-            yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(0f);
+            Debug.Log("je me détrui");
+            Destroy(gameObject);
             net.respawn();
-            
-
         }
 
     }
