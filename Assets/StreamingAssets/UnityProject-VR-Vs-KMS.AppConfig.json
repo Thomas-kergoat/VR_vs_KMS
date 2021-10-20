@@ -11,5 +11,5 @@
 	"ColorShotVirus_B": "0",
 	"NbContaminationPlayerToVictory": "3",
 	"RadiusExplosion": "6",
-	"TimeToAreaContaminator": "3"
+	"TimeToAreaContaminator": "10"
 }

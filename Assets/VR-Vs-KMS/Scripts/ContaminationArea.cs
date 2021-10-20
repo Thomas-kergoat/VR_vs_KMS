@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using WS3;
 
 namespace vr_vs_kms
 {
@@ -34,11 +35,11 @@ namespace vr_vs_kms
         [SerializeField] private float seizingMax;
         public float seizingSpeed;
         private float seizingCurrent;
-        private string capturedBy = "None";
-        private bool VRCapturing = false;
-        private bool KMSCapturing = false;
+        public string capturedBy = "None";
+        public bool VRCapturing = false;
+        public bool KMSCapturing = false;
 
-        public List<Players> playersOnPoint;
+        public List<GameObject> playersOnPoint;
 
         void Start()
         {
@@ -96,7 +97,7 @@ namespace vr_vs_kms
                     }
                 }
             }
-            if (other.tag == "VRPlayer")
+            if (other.tag == "VRGameObject")
             {
                 VRCapturing = false;
                 other.gameObject.GetComponent<Players>().slider.gameObject.SetActive(false);
@@ -116,15 +117,15 @@ namespace vr_vs_kms
             if (other.tag == "KeyboardPlayer")
             {
                 KMSCapturing = true;
-                playersOnPoint.Add(other.gameObject.GetComponent<Players>());
+                playersOnPoint.Add(other.gameObject);
                 other.gameObject.GetComponent<Players>().slider.gameObject.SetActive(true);
             }
-            if (other.tag == "VRPlayer")
+            if (other.tag == "VRGameObject")
             {
                 VRCapturing = true;
-                playersOnPoint.Add(other.gameObject.GetComponent<Players>());
+                playersOnPoint.Add(other.gameObject);
                 Debug.Log(other.tag + " " + other.name);
-                other.gameObject.GetComponent<Players>().slider.gameObject.SetActive(true);
+                other.gameObject.GetComponent<VR_CameraRigMultiUser>().slider.gameObject.SetActive(true);
             }
         }
 
@@ -149,19 +150,21 @@ namespace vr_vs_kms
                 {
                     seizingCurrent = seizingCurrent + seizingSpeed * Time.deltaTime;
                 }
-                foreach (Players player in playersOnPoint)
+                foreach (GameObject player in playersOnPoint)
                 {
-                    if (player.tag == "VRPlayer")
+                    if (player.tag == "VRGameObject")
                     {
-                        player.slider.value = seizingCurrent / seizingMax;
+                        player.GetComponent<VR_CameraRigMultiUser>().slider.gameObject.SetActive(true);
 
-                        player.slider.GetComponentsInChildren<Image>()[1].color = virus.secondColor;
+                        player.GetComponent<VR_CameraRigMultiUser>().slider.value = seizingCurrent / seizingMax;
+
+                        player.GetComponent<VR_CameraRigMultiUser>().slider.GetComponentsInChildren<Image>()[1].color = virus.secondColor;
 
                     }
                 }
                 if (seizingCurrent > seizingMax)
                 {
-                    capturedBy = "VRPlayer";
+                    capturedBy = "VRGameObject";
                     sprite.color = virus.secondColor;
                 }
             }
@@ -172,13 +175,15 @@ namespace vr_vs_kms
                 {
                     seizingCurrent = seizingCurrent + seizingSpeed * Time.deltaTime;
                 }
-                foreach (Players player in playersOnPoint)
+                foreach (GameObject player in playersOnPoint)
                 {
                     if (player.tag == "KeyboardPlayer")
                     {
-                        player.slider.value = seizingCurrent / seizingMax;
+                        player.GetComponent<Players>().slider.gameObject.SetActive(true);
 
-                        player.slider.GetComponentsInChildren<Image>()[1].color = scientist.secondColor;
+                        player.GetComponent<Players>().slider.value = seizingCurrent / seizingMax;
+
+                        player.GetComponent<Players>().slider.GetComponentsInChildren<Image>()[1].color = scientist.secondColor;
 
                     }
                 }

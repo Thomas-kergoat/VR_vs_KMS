@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using vr_vs_kms;
 using WS3;
 
 public class RoundManager : MonoBehaviourPunCallbacks 
@@ -10,7 +11,10 @@ public class RoundManager : MonoBehaviourPunCallbacks
     public Text score;
 
     public NetworkManager NetworkManager;
+    public List<GameObject> contaminationArea;
 
+    public float NbContAreaVirus;
+    public float NbContAreaAntiVirus;
     public float VirusKilled = 0;
     public float AntiVirusKilled = 0;
     private float NbContaminatedtedPlayerToVictory;
@@ -24,7 +28,9 @@ public class RoundManager : MonoBehaviourPunCallbacks
     // Update is called once per frame
     void Update()
     {
-        if(VirusKilled == NbContaminatedtedPlayerToVictory )
+        NbContAreaVirus = 0;
+        NbContAreaAntiVirus = 0;
+        if (VirusKilled == NbContaminatedtedPlayerToVictory )
         {
             //score.text = "kPlayers Win";
             Debug.Log("kPlayers Win");
@@ -40,6 +46,32 @@ public class RoundManager : MonoBehaviourPunCallbacks
             //photonView.RPC("EndGame", RpcTarget.AllViaServer);
             
         }
+
+        foreach (GameObject contamination in contaminationArea)
+        {
+            if (contamination.GetComponent<ContaminationArea>().capturedBy == "VRGameObject")
+            {
+                NbContAreaVirus++;
+            }
+            else if (contamination.GetComponent<ContaminationArea>().capturedBy == "KeyboardPlayer")
+            {
+                NbContAreaAntiVirus++;
+            }
+        }
+
+        if (NbContAreaVirus == contaminationArea.Count)
+        {
+            Debug.Log("vPlayers Win");
+            photonView.RPC("EndGame",RpcTarget.All);
+           
+        }
+        else if (NbContAreaAntiVirus == contaminationArea.Count)
+        {
+            Debug.Log("kPlayers Win");
+            photonView.RPC("EndGame", RpcTarget.All);
+            
+        }
+
     }
 
 
@@ -75,6 +107,6 @@ public class RoundManager : MonoBehaviourPunCallbacks
     [PunRPC]
     public void EndGame()
     {
-       PhotonNetwork.LeaveRoom();
+       NetworkManager.KillRoom();
     }
 }
