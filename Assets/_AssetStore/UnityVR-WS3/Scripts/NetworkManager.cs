@@ -18,7 +18,7 @@ namespace WS3
 
         public static NetworkManager Instance;
 
-        public GameObject teleporting;
+      
 
         [Tooltip("The prefab to use for representing the user on a PC. Must be in Resources folder")]
         public GameObject playerPrefabPC;
@@ -96,8 +96,6 @@ namespace WS3
 
             spawn = SpawnList[rand].transform;
 
-            var UserDeviceManager = GetComponent<UserDeviceManager>();
-
             if (playerPrefabPC == null)
             {
                 Debug.LogError("<Color=Red><a>Missing</a></Color> playerPrefabPC Reference. Please set it up in GameObject 'Game Manager'", this);
@@ -112,7 +110,7 @@ namespace WS3
                         Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
                         // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
                         PhotonNetwork.Instantiate("Prefabs/" + playerPrefabVR.name, new Vector3(spawn.transform.position.x, 0, spawn.transform.position.z), Quaternion.identity, 0);
-                        teleporting.SetActive(true);
+                        
                     }
                     else if (UserDeviceManager.GetDeviceUsed() == UserDeviceType.PC)
                     {
@@ -144,5 +142,43 @@ namespace WS3
             
         }
         #endregion
+
+        public void respawn()
+        {
+            StartCoroutine(DelayRespawn());
+        }
+
+        IEnumerator DelayRespawn()
+        {
+            yield return new WaitForSeconds(1.5f);
+            if (playerPrefabPC == null)
+            {
+                Debug.LogError("<Color=Red><a>Missing</a></Color> playerPrefabPC Reference. Please set it up in GameObject 'Game Manager'", this);
+            }
+            else
+            {
+                // TODO: Instantiate the prefab representing my own avatar only if it is UserMe
+                if (UserManager.UserMeInstance == null)
+                {
+                    if (UserDeviceManager.GetDeviceUsed() == UserDeviceType.HTC)
+                    {
+                        Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
+                        // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
+                        PhotonNetwork.Instantiate("Prefabs/" + playerPrefabVR.name, new Vector3(spawn.transform.position.x, 0, spawn.transform.position.z), Quaternion.identity, 0);
+                    }
+                    else if (UserDeviceManager.GetDeviceUsed() == UserDeviceType.PC)
+                    {
+                        Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
+                        // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
+                        PhotonNetwork.Instantiate("Prefabs/" + playerPrefabPC.name, new Vector3(spawn.transform.position.x, 1, spawn.transform.position.z), Quaternion.identity, 0);
+                    }
+
+                }
+                else
+                {
+                    Debug.LogFormat("Ignoring scene load for {0}", SceneManagerHelper.ActiveSceneName);
+                }
+            }
+        }
     }
 }

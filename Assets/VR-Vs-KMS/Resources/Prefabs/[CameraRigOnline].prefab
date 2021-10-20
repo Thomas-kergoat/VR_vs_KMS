@@ -84,8 +84,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4200696157014849484}
   m_Layer: 0
-  m_Name: ChargeSpawner
-  m_TagString: Untagged
+  m_Name: '[CameraRigOnline]'
+  m_TagString: VRPlayer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -195,10 +195,36 @@ SphereCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4200696157032271205
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UiScaleMode: 0
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 800, y: 600}
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 0
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1
+--- !u!114 &8543464266058586584
+  SteamVRLeft: {fileID: 5087469330082145243}
+  SteamVRRight: {fileID: 5087348958148723635}
+  SteamVRCamera: {fileID: 5087109762274769619}
+  UserOtherLeftHandModel: {fileID: 100060, guid: 65d8eda911e0ba548a3674f65c43308b,
+    type: 3}
+  UserOtherRightHandModel: {fileID: 100060, guid: 641e9d2f5c6b4cb438161abef3be8300,
+    type: 3}
+  ChargeVirale: {fileID: 8377634130601301843, guid: aefe3a79a1d168b43898d45abe256575,
+    type: 3}
+  ChargeSpawner: {fileID: 5808098118127494822}
+  speed: 15
+  Health: 5
+  source: 0
+  roundManager: {fileID: 0}
+--- !u!114 &-3583608983541205929
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

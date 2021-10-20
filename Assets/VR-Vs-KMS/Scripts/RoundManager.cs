@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class RoundManager : MonoBehaviour
 {
-    public TextMeshPro score;
+    public Text score;
 
     private bool gameOnGoing = false;
 
@@ -14,20 +13,13 @@ public class RoundManager : MonoBehaviour
 
     public List<GameObject> keyboardPlayer;
 
+    public float VirusKilled = 0;
+    public float AntiVirusKilled = 0;
+    private float NbContaminatedtedPlayerToVictory;
+
     void Start()
     {
-        foreach (GameObject kPlayer in GameObject.FindGameObjectsWithTag("KMSPlayer"))
-        {
-
-            keyboardPlayer.Add(kPlayer);
-        }
-
-        foreach (GameObject vPlayer in GameObject.FindGameObjectsWithTag("VRPlayer"))
-        {
-
-            VRPlayer.Add(vPlayer);
-        }
-
+        NbContaminatedtedPlayerToVictory = AppConfig.Inst.NbContaminationPlayerToVictory;
         gameOnGoing = false;
 
     }
@@ -36,46 +28,34 @@ public class RoundManager : MonoBehaviour
     void Update()
     {
 
-        if(VRPlayer.Count <= 0)
+        if(VirusKilled == NbContaminatedtedPlayerToVictory )
         {
-            score.text = "KMSPlayer Win";
+            score.text = "kPlayers Win";
             gameOnGoing = false;
 
-        } else if(keyboardPlayer.Count <= 0)
+        } else if(AntiVirusKilled == NbContaminatedtedPlayerToVictory)
         {
-            score.text = "VRPlayer Win";
+            score.text = "vPlayers Win";
             gameOnGoing = false;
 
         } else
         {
-            score.text = VRPlayer.Count + " ||| " + keyboardPlayer.Count;
+            //score.text = "kPlayer kills : " + VirusKilled + "\n VRPlayer kills : " + AntiVirusKilled;
             gameOnGoing = true;
         }
 
 
     }
 
-    public void DestroyPlayer(GameObject player)
+    public void KillPlayer(GameObject player)
     {
-        if(player.tag == "KMSPlayer")
+        if (player.tag == "KeyboardPlayer")
         {
-            for (int i = 0; i< keyboardPlayer.Count; i++)
-            {
-                if (keyboardPlayer[i].GetInstanceID() == player.GetInstanceID())
-                {
-                    keyboardPlayer.RemoveAt(i);
-                }
-            }
+            AntiVirusKilled++;
         }
         else if (player.tag == "VRPlayer")
         {
-            for (int i = 0; i< VRPlayer.Count; i++)
-            {
-                if (VRPlayer[i].GetInstanceID() == player.GetInstanceID())
-                {
-                    VRPlayer.RemoveAt(i);
-                }
-            }
+            VirusKilled++;
         }
     }
 }
