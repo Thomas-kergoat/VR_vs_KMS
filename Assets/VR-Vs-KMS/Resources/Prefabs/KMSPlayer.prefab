@@ -1194,6 +1194,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 1
   camera: {fileID: 2425674114422345564}
+  aim: {fileID: 2425674114004211657}
   bullet: {fileID: 1158534519924672389, guid: 7596581e2f193074bbb53a4929a1ac06, type: 3}
   BulletSpawn: {fileID: 2425674114551595070}
   speed: 20
@@ -1568,7 +1569,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2425674114551595071}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0.11, z: 0.061}
+  m_LocalPosition: {x: 0, y: 0.141, z: 0.514}
   m_LocalScale: {x: 0.20000002, y: 0.3333333, z: 0.20000002}
   m_Children: []
   m_Father: {fileID: 2425674114446062539}
