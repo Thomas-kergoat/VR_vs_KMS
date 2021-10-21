@@ -114,7 +114,7 @@ namespace vr_vs_kms
             }
         }
 
-        private void OnTriggerEnter(Collider other)
+        void OnTriggerEnter(Collider other)
         {
             if (other.tag == "KeyboardPlayer")
             {
@@ -130,7 +130,7 @@ namespace vr_vs_kms
 
                 
             }
-            if (other.tag == "VRPlayer")
+            else if (other.tag == "VRPlayer")
             {
                 if (capturedBy == "KeyboardPlayer")
                 {
@@ -142,8 +142,6 @@ namespace vr_vs_kms
                 Debug.Log(other.tag + " " + other.name);
                 other.gameObject.GetComponentInParent<VR_CameraRigMultiUser>().slider.gameObject.SetActive(true);
                 Debug.Log("un virus rentre dans la zone");
-
-                
             }
         }
 
