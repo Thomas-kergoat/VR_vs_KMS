@@ -49,7 +49,7 @@ public class RoundManager : MonoBehaviourPunCallbacks
 
         foreach (GameObject contamination in contaminationArea)
         {
-            if (contamination.GetComponent<ContaminationArea>().capturedBy == "VRGameObject")
+            if (contamination.GetComponent<ContaminationArea>().capturedBy == "VRPlayer")
             {
                 NbContAreaVirus++;
             }
