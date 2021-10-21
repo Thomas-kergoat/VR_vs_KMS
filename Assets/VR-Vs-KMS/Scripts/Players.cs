@@ -13,6 +13,11 @@ public class Players : MonoBehaviourPunCallbacks, IPunObservable
 
     public RoundManager roundManager;
 
+    public AudioSource spawnSound;
+    public AudioSource deathSound;
+
+    public AudioSource soundOnHit;
+
     public Image RedBar;
 
     public Slider slider;
@@ -29,6 +34,7 @@ public class Players : MonoBehaviourPunCallbacks, IPunObservable
         netObj = GameObject.Find("NetworkManager");
         net = netObj.GetComponent<NetworkManager>();
         roundManager = GameObject.Find("RoundManager").GetComponent<RoundManager>();
+        spawnSound.Play();
     }
 
     // Update is called once per frame
@@ -48,6 +54,7 @@ public class Players : MonoBehaviourPunCallbacks, IPunObservable
         {
             currentLife = currentLife - damage;
             Debug.Log("KMSUSER :  je suis touché il me reste : " + currentLife + " hp !!!");
+            soundOnHit.Play();
         }
         
     }
@@ -61,6 +68,9 @@ public class Players : MonoBehaviourPunCallbacks, IPunObservable
             if (currentLife <= 0)
             {
                 Debug.Log("Arghh je meurs !!!");
+                deathSound.Play();
+
+
                 roundManager.KillPlayer(gameObject);
 
                 if (net)

@@ -10,6 +10,7 @@ public class Weapon : MonoBehaviourPunCallbacks
     [SerializeField] float damage = 1f;
 
     new public Camera camera;
+    public AudioSource shootSound;
     public GameObject bullet;
     public Transform BulletSpawn;
     public float speed = 20f;
@@ -47,6 +48,7 @@ public class Weapon : MonoBehaviourPunCallbacks
         GameObject Bullet = Instantiate(
             bullet,
             position + directionAndSpeed * Mathf.Clamp(lag, 0, 1.0f),Quaternion.Euler(BulletSpawn.transform.eulerAngles));
+        shootSound.Play();
 
 
 

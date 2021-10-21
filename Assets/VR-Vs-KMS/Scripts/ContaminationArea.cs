@@ -31,6 +31,8 @@ namespace vr_vs_kms
         public float inTimer = 0f;
         private CullingGroup cullGroup;
 
+        public AudioSource soundCapturing;
+        public AudioSource soundCaptured;
         [SerializeField] private SpriteRenderer sprite;
         [SerializeField] private float seizingMax;
         public float seizingSpeed;
@@ -149,6 +151,7 @@ namespace vr_vs_kms
                 if (seizingCurrent < seizingMax)
                 {
                     seizingCurrent = seizingCurrent + seizingSpeed * Time.deltaTime;
+                    if (!soundCapturing.isPlaying) soundCapturing.Play();
                 }
                 foreach (GameObject player in playersOnPoint)
                 {
@@ -164,6 +167,7 @@ namespace vr_vs_kms
                 }
                 if (seizingCurrent > seizingMax)
                 {
+                    if (capturedBy != "VRGameObject") soundCaptured.Play();
                     capturedBy = "VRGameObject";
                     sprite.color = virus.secondColor;
                 }
@@ -174,6 +178,7 @@ namespace vr_vs_kms
                 if (seizingCurrent < seizingMax)
                 {
                     seizingCurrent = seizingCurrent + seizingSpeed * Time.deltaTime;
+                    if (!soundCapturing.isPlaying) soundCapturing.Play();
                 }
                 foreach (GameObject player in playersOnPoint)
                 {
@@ -189,6 +194,7 @@ namespace vr_vs_kms
                 }
                 if (seizingCurrent > seizingMax)
                 {
+                    if (capturedBy != "KeyboardPlayer") soundCaptured.Play();
                     capturedBy = "KeyboardPlayer";
                     sprite.color = scientist.secondColor;
                 }
