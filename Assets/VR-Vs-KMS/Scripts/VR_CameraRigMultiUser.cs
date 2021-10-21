@@ -185,7 +185,6 @@ namespace WS3
             else
             {
                 Health = (float)stream.ReceiveNext();
-                Debug.Log(Health + "iuiseghfiusgiegh");
                 if (Health <= 0)
                 {
                     Debug.Log("je détruit l'autre !!!");

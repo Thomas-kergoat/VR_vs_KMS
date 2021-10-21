@@ -12,61 +12,107 @@ public class Radar : MonoBehaviour
 
     public GameObject blackDot;
 
-    public List<GameObject> VRPlayersDots;
+    public List<GameObject> KMSPlayersDots;
 
-    public List<GameObject> VRPlayers;
+    public List<GameObject> KMSPlayers;
 
-    private float mapH, mapW, oldFrame, differenceFrames, clockwise = 1f; 
-    private Vector3 distancePlayers, distanceDots;
+    private float mapH, mapW, oldFrame, differenceFrames;
+    private Vector3 distancePlayers;
     private Image map;
 
     void Start()
     {
+
+        InvokeRepeating("RefreshPlayers", 0f, 2.0f);
+
         oldFrame = player.transform.eulerAngles.y;
 
         map = GetComponent<Image>();
 
-        mapH = map.rectTransform.sizeDelta.y;
+        mapH = 50;
 
-        mapW = map.rectTransform.sizeDelta.x;
+        mapW = 50;
 
-        Debug.Log(mapH + " " + mapW);
+        foreach (GameObject radarDot in GameObject.FindGameObjectsWithTag("RadarDot"))
+        {
 
-        foreach (GameObject vPlayer in GameObject.FindGameObjectsWithTag("VRPlayer"))
+            Destroy(radarDot);
+
+        }
+
+        foreach (GameObject vPlayer in GameObject.FindGameObjectsWithTag("KeyboardPlayer"))
         {
 
             GameObject newDot = Instantiate(redDotPrefab);
 
+            newDot.transform.localScale = new Vector3(1, 1, 1);
+
             newDot.transform.SetParent(blackDot.transform, false);
 
-            VRPlayersDots.Add(newDot);
+            newDot.tag = "RadarDot";
 
-            VRPlayers.Add(vPlayer);
+            KMSPlayersDots.Add(newDot);
+
+            KMSPlayers.Add(vPlayer);
 
         }
+
+        Debug.Log( "ICIIIIIIIIIIII "  +  KMSPlayers);
 
     }
 
     void Update()
     {
 
-
-        for (int i = 0; i < VRPlayersDots.Count; i++)
+        for (int i = 0; i < KMSPlayersDots.Count; i++)
         {
 
-            distancePlayers = VRPlayers[i].transform.position - player.transform.position;
+            distancePlayers = KMSPlayers[i].transform.position - player.transform.position;
 
             differenceFrames = oldFrame - player.transform.eulerAngles.y;
 
-            if (differenceFrames < 10 && differenceFrames > -10) map.rectTransform.Rotate(0, 0, -differenceFrames );
+            if (differenceFrames < 10 && differenceFrames > -10) map.rectTransform.Rotate(0, 0, -differenceFrames);
 
-            Debug.Log(differenceFrames);
-
-            VRPlayersDots[i].GetComponent<Image>().rectTransform.anchoredPosition = new Vector2(distancePlayers.x * mapW * 0.5f, distancePlayers.z * mapH * 0.5f);
+            KMSPlayersDots[i].GetComponent<Image>().rectTransform.anchoredPosition = new Vector2(distancePlayers.x * mapW * 0.5f, distancePlayers.z * mapH * 0.5f);
 
         }
 
         oldFrame = player.transform.eulerAngles.y;
 
     }
+
+    private void RefreshPlayers()
+    {
+        KMSPlayers.Clear();
+
+        KMSPlayersDots.Clear();
+
+        foreach (GameObject radarDot in GameObject.FindGameObjectsWithTag("RadarDot"))
+        {
+
+            Destroy(radarDot);
+
+        }
+
+        foreach (GameObject vPlayer in GameObject.FindGameObjectsWithTag("KeyboardPlayer"))
+        {
+
+            GameObject newDot = Instantiate(redDotPrefab);
+
+            newDot.transform.localScale = new Vector3(1, 1, 1);
+
+            newDot.transform.SetParent(blackDot.transform, false);
+
+            newDot.tag = "RadarDot";
+
+            KMSPlayersDots.Add(newDot);
+
+            KMSPlayers.Add(vPlayer);
+
+        }
+
+        Debug.Log("ICIIIIIIIIIIII2 " + KMSPlayers);
+
+    }
+
 }

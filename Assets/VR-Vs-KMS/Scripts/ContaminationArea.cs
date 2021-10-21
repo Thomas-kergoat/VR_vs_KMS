@@ -166,6 +166,7 @@ namespace vr_vs_kms
                 BelongsToVirus();
                 if (seizingCurrent < seizingMax)
                 {
+                    sprite.color = nobody.secondColor;
                     seizingCurrent = seizingCurrent + seizingSpeed * Time.deltaTime;
                     if (!soundCapturing.isPlaying) soundCapturing.Play();
                 }
@@ -184,7 +185,7 @@ namespace vr_vs_kms
                 if (seizingCurrent > seizingMax)
                 {
                     if (capturedBy != "VRGameObject") soundCaptured.Play();
-                    capturedBy = "VRGameObject";
+                    capturedBy = "VRPlayer";
                     sprite.color = virus.secondColor;
                 }
             }
@@ -193,6 +194,7 @@ namespace vr_vs_kms
                 BelongsToScientists();
                 if (seizingCurrent < seizingMax)
                 {
+                    sprite.color = nobody.secondColor;
                     seizingCurrent = seizingCurrent + seizingSpeed * Time.deltaTime;
                     if (!soundCapturing.isPlaying) soundCapturing.Play();
                 }

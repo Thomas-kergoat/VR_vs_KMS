@@ -64,7 +64,7 @@ public class Players : MonoBehaviourPunCallbacks, IPunObservable
         if (stream.IsWriting)
         {
             stream.SendNext(currentLife);
-            PercentOfHp = (currentLife * 100) / maxLife;
+            PercentOfHp = (currentLife * 500) / maxLife;
             if (currentLife <= 0)
             {
                 Debug.Log("Arghh je meurs !!!");

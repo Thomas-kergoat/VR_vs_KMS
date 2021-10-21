@@ -92,18 +92,6 @@ public class RoundManager : MonoBehaviourPunCallbacks
         }
     }
 
-   /* public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        if (stream.IsWriting)
-        {
-            stream.SendNext(VirusKilled);
-        }
-        else
-        {
-            VirusKilled = (float)stream.ReceiveNext();
-        }
-    }*/
-
     [PunRPC]
     public void EndGame()
     {

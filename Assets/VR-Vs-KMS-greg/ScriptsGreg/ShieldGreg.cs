@@ -26,7 +26,7 @@ public class ShieldGreg : MonoBehaviourPunCallbacks
     // Update is called once per frame
     void Update()
     {
-        PercentOfShield = (currentShieldLife*100)/maxShieldLife;
+        PercentOfShield = (currentShieldLife * 50 )/maxShieldLife;
 
         if (currentShieldLife <= 0)
         {

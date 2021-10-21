@@ -42,7 +42,7 @@ namespace WS3
         public override void OnLeftRoom()
         {
             // TODO: load the Lobby Scene
-            SceneManager.LoadScene("LobbyScene");
+            SceneManager.LoadScene("LobbySceneNew");
         }
 
         /// <summary>
