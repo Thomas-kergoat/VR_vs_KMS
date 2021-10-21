@@ -99,10 +99,10 @@ namespace vr_vs_kms
                     }
                 }
             }
-            if (other.tag == "VRGameObject")
+            if (other.tag == "VRPlayer")
             {
                 VRCapturing = false;
-                other.gameObject.GetComponent<Players>().slider.gameObject.SetActive(false);
+                other.gameObject.GetComponentInParent<VR_CameraRigMultiUser>().slider.gameObject.SetActive(false);
 
                 for (int i = 0; i < playersOnPoint.Count; i++)
                 {
@@ -118,16 +118,32 @@ namespace vr_vs_kms
         {
             if (other.tag == "KeyboardPlayer")
             {
+                if (capturedBy == "VRPlayer")
+                {
+                    other.gameObject.GetComponent<Players>().slider.value = 0;
+                    seizingCurrent = 0;
+                }
                 KMSCapturing = true;
                 playersOnPoint.Add(other.gameObject);
                 other.gameObject.GetComponent<Players>().slider.gameObject.SetActive(true);
+                Debug.Log("un Antivirus rentre dans la zone");
+
+                
             }
-            if (other.tag == "VRGameObject")
+            if (other.tag == "VRPlayer")
             {
+                if (capturedBy == "KeyboardPlayer")
+                {
+                    other.gameObject.GetComponentInParent<VR_CameraRigMultiUser>().slider.value = 0;
+                    seizingCurrent = 0;
+                }
                 VRCapturing = true;
                 playersOnPoint.Add(other.gameObject);
                 Debug.Log(other.tag + " " + other.name);
-                other.gameObject.GetComponent<VR_CameraRigMultiUser>().slider.gameObject.SetActive(true);
+                other.gameObject.GetComponentInParent<VR_CameraRigMultiUser>().slider.gameObject.SetActive(true);
+                Debug.Log("un virus rentre dans la zone");
+
+                
             }
         }
 
@@ -155,13 +171,13 @@ namespace vr_vs_kms
                 }
                 foreach (GameObject player in playersOnPoint)
                 {
-                    if (player.tag == "VRGameObject")
+                    if (player.tag == "VRPlayer")
                     {
-                        player.GetComponent<VR_CameraRigMultiUser>().slider.gameObject.SetActive(true);
+                        player.GetComponentInParent<VR_CameraRigMultiUser>().slider.gameObject.SetActive(true);
 
-                        player.GetComponent<VR_CameraRigMultiUser>().slider.value = seizingCurrent / seizingMax;
+                        player.GetComponentInParent<VR_CameraRigMultiUser>().slider.value = seizingCurrent / seizingMax;
 
-                        player.GetComponent<VR_CameraRigMultiUser>().slider.GetComponentsInChildren<Image>()[1].color = virus.secondColor;
+                        player.GetComponentInParent<VR_CameraRigMultiUser>().slider.GetComponentsInChildren<Image>()[1].color = virus.secondColor;
 
                     }
                 }
