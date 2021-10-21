@@ -68,8 +68,6 @@ public class Radar : MonoBehaviour
 
         }
 
-        Debug.Log("Refreshing");
-
         foreach (GameObject vPlayer in GameObject.FindGameObjectsWithTag("KMSPlayer"))
         {
 

@@ -35,7 +35,6 @@ namespace WS3
         void Start()
         {
             Health = AppConfig.Inst.LifeNumber;
-            Debug.Log("ma vie en tant que joueur vr est de : " + Health);
             updateGoFreeLookCameraRig();
             steamVRactivation();
             GetComponentInChildren<ParticleSystem>().enableEmission = !photonView.IsMine;
@@ -93,7 +92,6 @@ namespace WS3
             updateGoFreeLookCameraRig();
             if (photonView.IsMine && SteamVR_Actions._default.GrabPinch.GetStateDown(source) && Shot)
             {
-                Debug.Log("je tire");
                 photonView.RPC("ShootVirus", RpcTarget.AllViaServer, ChargeSpawner.position, speed * ChargeSpawner.forward);
                 StartCoroutine(DelayShotVr());
             }
@@ -113,8 +111,6 @@ namespace WS3
                     Debug.Log("Network manager nout found disconnection");
                     PhotonNetwork.LeaveLobby();
                 }
-
-
             }
         }
 

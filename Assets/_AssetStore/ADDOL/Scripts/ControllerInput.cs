@@ -37,17 +37,18 @@ public class ControllerInput : MonoBehaviour {
 
         if (SteamVR_Actions._default.GrabPinch.GetStateDown(source))
         {
+            Debug.Log("Down");
             //isGrabbingPinch = true;
-            if(SelectedObject != null) this.GetComponent<PhotonView>().RPC("GrabSelectedObject", RpcTarget.AllViaServer);
-            
+            //if(SelectedObject != null) this.GetComponent<PhotonView>().RPC("GrabSelectedObject", RpcTarget.AllViaServer);
+            if (SelectedObject != null) GrabSelectedObject();
+
         }
 
         if (SteamVR_Actions._default.GrabPinch.GetStateUp(source))
         {
             //isGrabbingPinch = false;
-            this.GetComponent<PhotonView>().RPC("UngrabTouchedObject", RpcTarget.AllViaServer);
-            
-
+            //this.GetComponent<PhotonView>().RPC("UngrabTouchedObject", RpcTarget.AllViaServer);
+            if (SelectedObject != null) UngrabTouchedObject();
         }
 
         if (SteamVR_Actions._default.Teleport.GetStateDown(source)) {
@@ -70,6 +71,8 @@ public class ControllerInput : MonoBehaviour {
         {
             FixedJoint fx = gameObject.AddComponent<FixedJoint>();
             fx.connectedBody = SelectedObject.GetComponent<Rigidbody>();
+            fx.breakForce = 20000;
+            fx.breakTorque = 20000;
         }
     }
     [PunRPC]
@@ -116,7 +119,7 @@ public class ControllerInput : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Grabbable")
+        if(other.tag == "Throwable")
         {
 
             Debug.Log("TriggerEnter");
@@ -128,7 +131,7 @@ public class ControllerInput : MonoBehaviour {
     private void OnTriggerExit(Collider other)
     {
         UngrabTouchedObject();
-        if (other.tag == "Grabbable")
+        if (other.tag == "Throwable")
         {
             Debug.Log("TriggerExit");
             Debug.Log(other.name);

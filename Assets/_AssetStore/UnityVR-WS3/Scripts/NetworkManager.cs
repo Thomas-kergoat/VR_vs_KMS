@@ -92,7 +92,6 @@ namespace WS3
             var size = SpawnList.Count;
 
             var rand = random.Next(0, size);
-            Debug.Log("nombre random "+rand);
 
             spawn = SpawnList[rand].transform;
 
