@@ -19,6 +19,10 @@ namespace WS3
 
         public Transform ChargeSpawner;
 
+        public AudioSource shootSound;
+        public AudioSource spawnSound;
+        public AudioSource deathSound;
+
         public float speed = 15f;
         public float Health;
         public float maxLife;
@@ -56,6 +60,7 @@ namespace WS3
             ps.enableEmission = !photonView.IsMine;
             net = GameObject.Find("NetworkManager").GetComponent<NetworkManager>();
             roundManager = GameObject.Find("RoundManager").GetComponent<RoundManager>();
+            spawnSound.Play();
         }
 
         private void updateGoFreeLookCameraRig()
@@ -127,6 +132,7 @@ namespace WS3
                 position + directionAndSpeed * Mathf.Clamp(lag, 0, 1.0f),
                 Quaternion.identity);
 
+            shootSound.Play();
 
             // Add velocity to the Snowball
             chargeVirale.GetComponent<Rigidbody>().velocity = directionAndSpeed;
@@ -155,6 +161,9 @@ namespace WS3
                 if (Health <= 0)
                 {
                     Debug.Log("Arghh je meurs !!!");
+
+                    deathSound.Play();
+
                     roundManager.KillPlayer(gameObject);
 
                     if (net)

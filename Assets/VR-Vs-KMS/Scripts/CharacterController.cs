@@ -7,6 +7,8 @@ class CharacterController : MonoBehaviour
     private Vector3 playerInput;
     private Rigidbody rb;
 
+    public AudioSource soundJump;
+
     [SerializeField] private float speed;
     [SerializeField] private float sensitivity;
     [SerializeField] private float jumpForce;
@@ -27,9 +29,11 @@ class CharacterController : MonoBehaviour
         Vector3 MoveVector = transform.TransformDirection(playerInput) * speed;
         rb.velocity = new Vector3(MoveVector.x, rb.velocity.y, MoveVector.z);
 
-        if (Input.GetKeyDown("space"))
+        if (Input.GetKeyDown("space") && transform.position.y < 1.25)
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+
+            if (!soundJump.isPlaying) soundJump.Play();
         }
 
         transform.Rotate(0f, mouseInput.x * sensitivity, 0f);

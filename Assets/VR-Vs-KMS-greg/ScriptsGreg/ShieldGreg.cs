@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 public class ShieldGreg : MonoBehaviourPunCallbacks
 {
+
+    public AudioSource soundOnHit;
+
     [SerializeField] private float maxShieldLife = 5;
 
     [SerializeField] private float currentShieldLife = 5;
@@ -41,6 +44,8 @@ public class ShieldGreg : MonoBehaviourPunCallbacks
         currentShieldLife = currentShieldLife - damage;
         Debug.Log("shield : intégrité  " + currentShieldLife);
         transform.localScale += new Vector3(-0.1f, -0.1f, -0.1f);
+        if (!soundOnHit.isPlaying) soundOnHit.Play();
+
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
